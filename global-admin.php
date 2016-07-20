@@ -62,7 +62,7 @@ function ga_requirements_notice() {
 							'plugin'        => $plugin_file,
 							'plugin_status' => 'all',
 						),
-						admin_url( 'plugins.php' )
+						self_admin_url( 'plugins.php' )
 					),
 					'deactivate-plugin_' . $plugin_file
 				)
@@ -74,6 +74,7 @@ function ga_requirements_notice() {
 
 if ( version_compare( $GLOBALS['wp_version'], '4.6-beta3', '<' ) ) {
 	add_action( 'admin_notices', 'ga_requirements_notice' );
+	add_action( 'network_admin_notices', 'ga_requirements_notice' );
 } else {
 	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/schema.php' );
 
