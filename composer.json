@@ -12,7 +12,7 @@
     "multisite",
     "multinetwork"
   ],
-  "homepage": "https://wordpress.org/plugins/global-admin/",
+  "homepage": "https://github.com/felixarntz/global-admin",
   "authors": [
     {
       "name": "Felix Arntz",

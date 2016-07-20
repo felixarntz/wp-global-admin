@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Global Admin
-Plugin URI:  https://wordpress.org/plugins/global-admin/
+Plugin URI:  https://github.com/felixarntz/global-admin
 Description: Introduces a global admin in WordPress. Works best with WP Multi Network.
 Version:     1.0.0
 Author:      Felix Arntz

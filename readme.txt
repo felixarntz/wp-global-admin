@@ -1,7 +1,7 @@
 === Global Admin ===
 
 Plugin Name:       Global Admin
-Plugin URI:        https://wordpress.org/plugins/global-admin/
+Plugin URI:        https://github.com/felixarntz/global-admin
 Author:            Felix Arntz
 Author URI:        https://leaves-and-love.net
 Contributors:      flixos90

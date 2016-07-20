@@ -15,7 +15,7 @@
     "email": "felix-arntz@leaves-and-love.net",
     "url": "https://leaves-and-love.net"
   },
-  "homepage": "https://wordpress.org/plugins/global-admin/",
+  "homepage": "https://github.com/felixarntz/global-admin",
   "repository": {
     "type": "git",
     "url": "git://github.com/felixarntz/global-admin.git"
