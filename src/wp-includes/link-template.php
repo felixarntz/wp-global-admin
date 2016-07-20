@@ -28,7 +28,9 @@ function global_site_url( $path = '', $scheme = null ) {
 		return site_url($path, $scheme);
 	}
 
-	$main_site = get_network( get_main_network_id() );
+	$main_site_id = get_main_network_id();
+
+	$main_site = get_network( $main_site_id );
 
 	if ( 'relative' == $scheme ) {
 		$url = $main_site->path;
@@ -75,7 +77,9 @@ function global_home_url( $path = '', $scheme = null ) {
 		return home_url($path, $scheme);
 	}
 
-	$main_site = get_network( get_main_network_id() );
+	$main_site_id = get_main_network_id();
+
+	$main_site = get_network( $main_site_id );
 	$orig_scheme = $scheme;
 
 	if ( ! in_array( $scheme, array( 'http', 'https', 'relative' ) ) ) {
