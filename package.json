@@ -1,0 +1,53 @@
+{
+  "name": "global-admin",
+  "version": "1.0.0",
+  "description": "Introduces a global admin in WordPress. Works best with WP Multi Network.",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "global admin",
+    "network",
+    "multisite",
+    "multinetwork"
+  ],
+  "author": {
+    "name": "Felix Arntz",
+    "email": "felix-arntz@leaves-and-love.net",
+    "url": "https://leaves-and-love.net"
+  },
+  "homepage": "https://wordpress.org/plugins/global-admin/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/felixarntz/global-admin.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/felixarntz/global-admin/issues"
+  },
+  "license": {
+    "type": "GPL-3.0",
+    "name": "GNU General Public License v3",
+    "url": "http://www.gnu.org/licenses/gpl-3.0.html"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "gulp": "^3.9.1",
+    "gulp-banner": "^0.1.3",
+    "gulp-composer": "^0.4.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-csscomb": "^3.0.6",
+    "gulp-install": "^0.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-load-plugins": "^1.2.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-sass": "^2.2.0",
+    "gulp-sort": "^2.0.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.1"
+  }
+}
