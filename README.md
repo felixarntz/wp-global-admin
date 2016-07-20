@@ -17,6 +17,10 @@ Unfortunately some quite hacky stuff is required to be able to generate this add
 
 Feel free to install it on your development environment - I'd suggest to add its own dedicated one since, especially in these very early stages, the plugin might mess up your environment. Contributions, ideas, feedback all welcome! Be aware that some concepts used in this plugin might be completely thrown overboard at some point. No backwards compatibility here at the moment!
 
+## Concept
+
+For an introduction about some of the concepts of the plugin, please read the [wiki](https://github.com/felixarntz/global-admin/wiki).
+
 ## Installation and Setup
 
 You can download the plugin from GitHub. Just clone the master branch or download it as ZIP file. Note that the plugin requires WordPress 4.6-beta3 or higher.
