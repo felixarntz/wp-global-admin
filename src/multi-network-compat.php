@@ -82,3 +82,31 @@ function _ga_adjust_networks_admin_url( $url, $args ) {
 	return add_query_arg( $args, global_admin_url( 'admin.php' ) );
 }
 add_filter( 'edit_networks_screen_url', '_ga_adjust_networks_admin_url', 10, 2 );
+
+function _ga_user_has_networks( $networks, $user_id ) {
+	if ( ! has_global_admin() ) {
+		return $networks;
+	}
+
+	$all_networks = get_networks( array( 'fields' => 'ids' ) );
+
+	if ( is_user_global_admin( $user_id ) ) {
+		$user_networks = $all_networks;
+	} else {
+		$user = get_userdata( $user_id );
+		$user_networks = array();
+		foreach ( $all_networks as $network_id ) {
+			$network_admins = get_network_option( $network_id, 'site_admins', array() );
+			if ( in_array( $user->user_login, $network_admins, true ) ) {
+				$user_networks[] = $network_id;
+			}
+		}
+	}
+
+	if ( empty( $user_networks ) ) {
+		$user_networks = false;
+	}
+
+	return $user_networks;
+}
+add_filter( 'networks_pre_user_is_network_admin', '_ga_user_has_networks', 10, 2 );
