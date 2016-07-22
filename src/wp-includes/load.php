@@ -19,13 +19,11 @@ function is_multinetwork() {
 		return false;
 	}
 
-	if ( false === ( $is_multinetwork = get_transient( 'is_multinetwork' ) ) ) {
-		$network_count = get_networks( array( 'count' => true, 'number' => 2 ) );
-		$is_multinetwork = 1 < $network_count;
-		set_transient( 'is_multinetwork', $is_multinetwork );
+	if ( defined( 'MULTINETWORK' ) ) {
+		return MULTINETWORK;
 	}
 
-	return (bool) $is_multinetwork;
+	return false;
 }
 endif;
 
@@ -45,6 +43,7 @@ endif;
  */
 if ( ! function_exists( 'is_global_admin' ) ) :
 function is_global_admin() {
+	//TODO: Trac Ticket
 	// It's not possible in a plugin to override this, therefore skip this check.
 	// Unfortunately this can also cause issues with `is_blog_admin()` because it will return
 	// true if we're in the global admin.

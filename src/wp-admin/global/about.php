@@ -9,8 +9,8 @@
 /** Load WordPress Administration Bootstrap */
 require_once( dirname( __FILE__ ) . '/admin.php' );
 
-if ( ! is_multisite() ) {
-	wp_die( __( 'Multisite support is not enabled.' ) );
+if ( ! is_multinetwork() ) {
+	wp_die( __( 'Multinetwork support is not enabled.', 'global-admin' ) );
 }
 
 require( ABSPATH . 'wp-admin/about.php' );

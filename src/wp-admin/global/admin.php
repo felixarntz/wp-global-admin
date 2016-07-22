@@ -42,8 +42,8 @@ if ( ! is_multisite() ) {
 	wp_die( __( 'Multisite support is not enabled.' ) );
 }
 
-if ( ! has_global_admin() ) {
-	wp_die( __( 'The global admin backend is not enabled.', 'global-admin' ) );
+if ( ! is_multinetwork() ) {
+	wp_die( __( 'Multinetwork support is not enabled.', 'global-admin' ) );
 }
 
 $current_network = get_network();

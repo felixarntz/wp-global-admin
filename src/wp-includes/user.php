@@ -20,11 +20,7 @@
 function ga_adjust_user_query( &$user_query ) {
 	global $wpdb;
 
-	if ( ! is_multisite() ) {
-		return;
-	}
-
-	if ( ! has_global_admin() ) {
+	if ( ! is_multinetwork() || is_global_admin() ) {
 		return;
 	}
 

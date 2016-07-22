@@ -7,51 +7,12 @@
  */
 
 /**
- * Whenever someone creates a new network, they are assumed to be a global admin.
- *
- * If they're not technically a global admin yet, let's make them one. This function
- * basically triggers the global admin functionality and backend to be available if it isn't yet.
- *
- * TODO: The WPMN filter should pass the arguments as well so we can actually detect the real user ID
- * and not base it on the assumption that it's the current user.
- *
- * @since 1.0.0
- * @access private
- *
- * @param int $new_network_id The ID of the newly created network.
- */
-function _ga_set_global_admin_on_network_creation( $new_network_id, $args = array() ) {
-	if ( isset( $args['user_id'] ) ) {
-		$user_id = $args['user_id'];
-	} else {
-		$user_id = get_current_user_id();
-	}
-
-	if ( $user_id == get_current_user_id() ) {
-		$user = wp_get_current_user();
-	} else {
-		$user = get_userdata( $user_id );
-	}
-
-	if ( ! has_global_admin() ) {
-		update_global_option( 'global_admins', array( $user->user_login ) );
-	}
-}
-add_action( 'add_network', '_ga_set_global_admin_on_network_creation', 10, 2 );
-
-//TODO: move networks menu from network admin to global admin backend, remove it from regular admin menu
-/**
  * Adjusts the network menus for WP Multi Network to be in the Global Administration panel.
  *
  * @since 1.0.0
  * @access private
  */
 function _ga_adjust_network_menus() {
-	if ( ! has_global_admin() ) {
-		return;
-	}
-
-	// This does not work yet, currently cannot access the admin instance of WP Multi Network.
 	$admin = wpmn()->admin;
 	if ( is_null( $admin ) ) {
 		return;
@@ -60,8 +21,47 @@ function _ga_adjust_network_menus() {
 	remove_action( 'admin_menu', array( $admin, 'admin_menu' ) );
 	remove_action( 'network_admin_menu', array( $admin, 'network_admin_menu' ) );
 	remove_action( 'network_admin_menu', array( $admin, 'network_admin_menu_separator' ) );
+
+	if ( is_multinetwork() ) {
+		add_action( 'global_admin_menu', array( $admin, 'network_admin_menu' ) );
+		add_action( 'global_admin_menu', '_ga_adjust_networks_menu_position', 11 );
+	} elseif ( defined( 'WP_ALLOW_MULTINETWORK' ) && WP_ALLOW_MULTINETWORK ) {
+		add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
+	}
 }
 add_action( 'init', '_ga_adjust_network_menus' );
+
+function _ga_add_global_setup_menu_item() {
+	add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'src/wp-admin/network/global.php' );
+}
+
+/**
+ * Adjusts the position of the Networks admin menu in the Global Administration panel.
+ *
+ * @since 1.0.0
+ * @access private
+ */
+function _ga_adjust_networks_menu_position() {
+	global $menu;
+
+	if ( ! isset( $menu[-1] ) ) {
+		return;
+	}
+
+	$networks_menu = $menu[-1];
+	if ( 'networks' !== $networks_menu[2] ) {
+		return;
+	}
+
+	unset( $menu[-1] );
+
+	if ( isset( $menu[5] ) ) {
+		$position = 5 + substr( base_convert( md5( $networks_menu[2] . $networks_menu[0] ), 16, 10 ) , -5 ) * 0.00001;
+		$menu[ "$position" ] = $networks_menu;
+	} else {
+		$menu[5] = $networks_menu;
+	}
+}
 
 /**
  * Adjusts the URL to the networks admin page to be part of the Global Administration panel.
@@ -73,7 +73,7 @@ add_action( 'init', '_ga_adjust_network_menus' );
  * @return string The adjusted URL.
  */
 function _ga_adjust_networks_admin_url( $url, $args ) {
-	if ( ! has_global_admin() ) {
+	if ( ! is_multinetwork() ) {
 		return $url;
 	}
 
@@ -83,8 +83,20 @@ function _ga_adjust_networks_admin_url( $url, $args ) {
 }
 add_filter( 'edit_networks_screen_url', '_ga_adjust_networks_admin_url', 10, 2 );
 
+/**
+ * Adjusts the detection of which networks belong to a user.
+ *
+ * Users who are a global admin have full capabilities on all networks.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param array|null $networks Original array of network IDs or null.
+ * @param int        $user_id  User ID to get networks for.
+ * @return array|false Array of network IDs or false if no IDs.
+ */
 function _ga_user_has_networks( $networks, $user_id ) {
-	if ( ! has_global_admin() ) {
+	if ( ! is_multinetwork() ) {
 		return $networks;
 	}
 

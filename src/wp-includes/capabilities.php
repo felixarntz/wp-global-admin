@@ -25,9 +25,9 @@
  * @return array The mapped capabilities.
  */
 function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
-	global $global_capabilities;
+	global $_global_capabilities;
 
-	if ( ! is_multisite() || ! has_global_admin() ) {
+	if ( ! is_multinetwork() ) {
 		return $caps;
 	}
 
@@ -36,11 +36,11 @@ function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 		return array( 'exist' );
 	}
 
-	if ( ! isset( $global_capabilities ) ) {
+	if ( ! isset( $_global_capabilities ) ) {
 		return $caps;
 	}
 
-	if ( ! in_array( $cap, $global_capabilities ) ) {
+	if ( ! in_array( $cap, $_global_capabilities ) ) {
 		return $caps;
 	}
 
@@ -81,24 +81,6 @@ function get_global_admins() {
 endif;
 
 /**
- * Checks whether there are any global admins for this setup.
- *
- * The global admin backend and capabilities are only enabled if there is at least one user
- * that is a global admin. Otherwise the super admin remains the role with the highest capabilities.
- *
- * @since 1.0.0
- *
- * @return bool Whether there is at least one global admin.
- */
-if ( ! function_exists( 'has_global_admin' ) ) :
-function has_global_admin() {
-	$global_admins = get_global_admins();
-
-	return 0 < count( $global_admins );
-}
-endif;
-
-/**
  * Checks whether a specific user is a global administrator.
  *
  * Naming of this function is sub-optimal. However it cannot be called `is_global_admin()`
@@ -125,7 +107,7 @@ function is_user_global_admin( $user_id = false ) {
 		return $user->has_cap( 'delete_users' );
 	}
 
-	if ( ! has_global_admin() ) {
+	if ( ! is_multinetwork() ) {
 		return $user->has_cap( 'manage_network' );
 	}
 
@@ -147,14 +129,14 @@ endif;
  */
 if ( ! function_exists( 'register_global_cap' ) ) :
 function register_global_cap( $cap ) {
-	global $global_capabilities;
+	global $_global_capabilities;
 
 	$cap = (array) $cap;
 
-	if ( ! isset( $global_capabilities ) ) {
-		$global_capabilities = array();
+	if ( ! isset( $_global_capabilities ) ) {
+		$_global_capabilities = array();
 	}
 
-	$global_capabilities = array_unique( array_merge( $global_capabilities, $cap ) );
+	$_global_capabilities = array_unique( array_merge( $_global_capabilities, $cap ) );
 }
 endif;

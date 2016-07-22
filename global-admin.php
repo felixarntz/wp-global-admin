@@ -2,7 +2,7 @@
 /*
 Plugin Name: Global Admin
 Plugin URI:  https://github.com/felixarntz/global-admin
-Description: Introduces a global admin in WordPress. Works best with WP Multi Network.
+Description: Introduces a global admin panel in WordPress. Works best with WP Multi Network.
 Version:     1.0.0
 Author:      Felix Arntz
 Author URI:  https://leaves-and-love.net
@@ -29,12 +29,21 @@ function ga_init() {
 	require_once( dirname( __FILE__ ) . '/src/wp-includes/user.php' );
 	require_once( dirname( __FILE__ ) . '/src/wp-includes/link-template.php' );
 
+	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/schema.php' );
+	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/hacks.php' );
+
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	if ( is_plugin_active( 'wp-multi-network/wpmn-loader.php' ) ) {
 		require_once( dirname( __FILE__ ) . '/src/multi-network-compat.php' );
 	}
 
-	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/hacks.php' );
+	if ( is_multinetwork() ) {
+		ga_register_table();
+	}
+
+	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
+		wp_cache_add_global_groups( array( 'global-options', 'global-transient' ) );
+	}
 
 	register_global_cap( array(
 		'manage_cache',
@@ -76,14 +85,5 @@ if ( version_compare( $GLOBALS['wp_version'], '4.6-beta3', '<' ) ) {
 	add_action( 'admin_notices', 'ga_requirements_notice' );
 	add_action( 'network_admin_notices', 'ga_requirements_notice' );
 } else {
-	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/schema.php' );
-
-	ga_register_table();
-	register_activation_hook( __FILE__, 'ga_install' );
-
-	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
-		wp_cache_add_global_groups( array( 'global-options', 'global-transient' ) );
-	}
-
 	add_action( 'plugins_loaded', 'ga_init' );
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Global Freedoms administration panel.
+ * Global Setup administration panel.
  *
  * @package GlobalAdmin
  * @since 1.0.0
@@ -13,4 +13,4 @@ if ( ! is_multinetwork() ) {
 	wp_die( __( 'Multinetwork support is not enabled.', 'global-admin' ) );
 }
 
-require( ABSPATH . 'wp-admin/freedoms.php' );
+require( dirname( dirname( __FILE__ ) ) . '/network/global.php' );

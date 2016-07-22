@@ -24,8 +24,8 @@
  */
 if ( ! function_exists( 'global_site_url' ) ) :
 function global_site_url( $path = '', $scheme = null ) {
-	if ( ! is_multisite() ) {
-		return site_url($path, $scheme);
+	if ( ! is_multinetwork() ) {
+		return network_site_url( $path, $scheme );
 	}
 
 	$main_site_id = get_main_network_id();
@@ -73,8 +73,8 @@ endif;
  */
 if ( ! function_exists( 'global_home_url' ) ) :
 function global_home_url( $path = '', $scheme = null ) {
-	if ( ! is_multisite() ) {
-		return home_url($path, $scheme);
+	if ( ! is_multinetwork() ) {
+		return network_home_url( $path, $scheme );
 	}
 
 	$main_site_id = get_main_network_id();
@@ -123,8 +123,8 @@ endif;
  */
 if ( ! function_exists( 'global_admin_url' ) ) :
 function global_admin_url( $path = '', $scheme = 'admin' ) {
-	if ( ! is_multisite() ) {
-		return admin_url( $path, $scheme );
+	if ( ! is_multinetwork() ) {
+		return network_admin_url( $path, $scheme );
 	}
 
 	$plugin_dir_relative = str_replace( home_url( '/' ), '', GA_URL );
@@ -170,3 +170,5 @@ function _ga_adjust_edit_profile_url( $url, $user_id, $scheme ) {
 	return global_admin_url( 'profile.php', $scheme );
 }
 add_filter( 'edit_profile_url', '_ga_adjust_edit_profile_url', 10, 3 );
+
+//TODO: Trac ticket for a filter in `self_admin_url()`

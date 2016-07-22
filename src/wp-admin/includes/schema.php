@@ -9,24 +9,15 @@
  */
 
 /**
- * Registers the global database table.
+ * Installs the global table.
  *
  * @since 1.0.0
  */
-function ga_register_table() {
-	global $wpdb;
-
-	$wpdb->ms_global_tables[] = 'global_options';
-	$wpdb->global_options = $wpdb->base_prefix . 'global_options';
-}
-
-/**
- * Installs the global database table.
- *
- * @since 1.0.0
- */
-function ga_install_table() {
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+if ( ! function_exists( 'install_global' ) ) :
+function install_global() {
+	if ( ! defined( 'WP_INSTALLING_GLOBAL' ) ) {
+		define( 'WP_INSTALLING_GLOBAL', true );
+	}
 
 	$queries = ga_get_db_schema( 'global' );
 	if ( empty( $queries ) ) {
@@ -35,25 +26,96 @@ function ga_install_table() {
 
 	dbDelta( $queries );
 }
+endif;
 
 /**
- * Install Network.
+ * Populate global settings.
  *
- * Overrides pluggable function in WP Core.
+ * @since 1.0.0
+ *
+ * @global wpdb       $wpdb
+ *
+ * @param string $email       Email address for the network administrator.
+ * @param string $global_name The name of the network.
+ * @return bool|WP_Error True on success, or WP_Error on failure.
+ */
+if ( ! function_exists( 'populate_global' ) ) :
+function populate_global( $email = '', $global_name = '' ) {
+	global $wpdb;
+
+	$errors = new WP_Error();
+
+	if ( empty( $global_name ) ) {
+		$errors->add( 'empty_global_name', __( 'You must provide a name for your global multinetwork.', 'global-admin' ) );
+	}
+
+	if ( ! is_email( $email ) ) {
+		$errors->add( 'invalid_email', __( 'You must provide a valid email address.', 'global-admin' ) );
+	}
+
+	if ( $errors->get_error_code() ) {
+		return $errors;
+	}
+
+	$user = get_user_by( 'email', $email );
+	if ( false === $user ) {
+		$user = wp_get_current_user();
+	}
+
+	$global_admins = array( $user->user_login );
+	if ( is_multinetwork() ) {
+		$global_admins = get_global_option( 'global_admins', array() );
+	}
+
+	$global_options = array(
+		'global_name'   => $global_name,
+		'admin_email'   => $email,
+		'admin_user_id' => $user->ID,
+		'global_admins' => $global_admins,
+	);
+
+	/**
+	 * Filters options for the global admin on creation.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $global_options Associative array of global keys and values to be inserted.
+	 */
+	$global_options = apply_filters( 'populate_global_options', $global_options );
+
+	$insert = '';
+	foreach ( $global_options as $key => $value ) {
+		if ( is_array( $value ) ) {
+			$value = serialize( $value );
+		}
+		if ( ! empty( $insert ) ) {
+			$insert .= ', ';
+		}
+		$insert .= $wpdb->prepare( "( %s, %s, %s)", $key, $value, 'yes' );
+	}
+
+	$wpdb->query( "INSERT INTO $wpdb->global_options ( option_name, option_value, autoload ) VALUES " . $insert );
+
+	return true;
+}
+endif;
+
+/**
+ * Registers the global database table.
  *
  * @since 1.0.0
  */
-if ( !function_exists( 'install_network' ) ) :
-function install_network() {
-	if ( ! defined( 'WP_INSTALLING_NETWORK' ) ) {
-		define( 'WP_INSTALLING_NETWORK', true );
+function ga_register_table() {
+	global $wpdb;
+
+	if ( isset( $wpdb->global_options ) ) {
+		return;
 	}
 
-	dbDelta( wp_get_db_schema( 'global' ) );
-
-	ga_install_table();
+	// In Core the property would be called `mn_global_tables`
+	$wpdb->ms_global_tables[] = 'global_options';
+	$wpdb->global_options = $wpdb->base_prefix . 'global_options';
 }
-endif;
 
 /**
  * Retrieve the SQL for creating database tables.
@@ -71,12 +133,12 @@ function ga_get_db_schema( $scope = 'all', $blog_id = null ) {
 
 	$charset_collate = $wpdb->get_charset_collate();
 
-	// Engage multisite if in the middle of turning it on from network.php.
-	$is_multisite = is_multisite() || ( defined( 'WP_INSTALLING_NETWORK' ) && WP_INSTALLING_NETWORK );
+	// Engage multinetwork if in the middle of turning it on from global.php.
+	$is_multinetwork = is_multinetwork() || ( defined( 'WP_INSTALLING_GLOBAL' ) && WP_INSTALLING_GLOBAL );
 
 	$max_index_length = 191;
 
-	$ms_global_tables = "CREATE TABLE $wpdb->global_options (
+	$mn_global_tables = "CREATE TABLE $wpdb->global_options (
   option_id bigint(20) unsigned NOT NULL auto_increment,
   option_name varchar(191) NOT NULL default '',
   option_value longtext NOT NULL,
@@ -91,30 +153,21 @@ function ga_get_db_schema( $scope = 'all', $blog_id = null ) {
 			break;
 		case 'global' :
 			$queries = '';
-			if ( $is_multisite ) {
-				$queries .= $ms_global_tables;
+			if ( $is_multinetwork ) {
+				$queries .= $mn_global_tables;
 			}
 			break;
-		case 'ms_global' :
-			$queries = $ms_global_tables;
+		case 'mn_global' :
+			$queries = $mn_global_tables;
 			break;
 		case 'all' :
 		default:
 			$queries = '';
-			if ( $is_multisite ) {
-				$queries .= $ms_global_tables;
+			if ( $is_multinetwork ) {
+				$queries .= $mn_global_tables;
 			}
 			break;
 	}
 
 	return $queries;
-}
-
-/**
- * Installation callback for plugin activation hook.
- *
- * @since 1.0.0
- */
-function ga_install() {
-	ga_install_table();
 }

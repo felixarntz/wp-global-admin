@@ -55,10 +55,10 @@ function get_global_option( $option, $default = false ) {
 		return $pre;
 	}
 
-	if ( ! is_multisite() ) {
+	if ( ! is_multinetwork() ) {
 		/** This filter is documented in wp-includes/option.php */
 		$default = apply_filters( 'default_global_option_' . $option, $default, $option );
-		$value = get_option( $option, $default );
+		$value = get_network_option( null, $option, $default );
 	} elseif ( ! wp_installing() ) {
 		// prevent non-existent options from triggering multiple queries
 		$notoptions = wp_cache_get( 'notoptions', 'global-options' );
@@ -188,7 +188,7 @@ endif;
  * @param string      $option   Option name. Expected to not be SQL-escaped.
  * @param mixed       $value    Option value. Must be serializable if non-scalar. Expected to not be SQL-escaped.
  * @param string|bool $autoload Optional. Whether to load the option when WordPress starts up. For existing options,
- *                              `$autoload` can only be updated using `update_option()` if `$value` is also changed.
+ *                              `$autoload` can only be updated using `update_global_option()` if `$value` is also changed.
  *                              Accepts 'yes'|true to enable or 'no'|false to disable. For non-existent options,
  *                              the default value is 'yes'. Default null.
  * @return bool False if value was not updated and true if value was updated.
@@ -260,8 +260,8 @@ function update_global_option( $option, $value, $autoload = null ) {
 	 */
 	do_action( 'update_global_option', $option, $old_value, $value );
 
-	if ( ! is_multisite() ) {
-		$result = update_option( $option, $value, 'no' );
+	if ( ! is_multinetwork() ) {
+		$result = update_network_option( null, $option, $value, 'no' );
 		if ( ! $result ) {
 			return false;
 		}
@@ -357,8 +357,8 @@ function add_global_option( $option, $value = '', $autoload = 'yes' ) {
 	if ( is_object($value) )
 		$value = clone $value;
 
-	if ( ! is_multisite() ) {
-		$result = add_option( $option, $value, '', 'no' );
+	if ( ! is_multinetwork() ) {
+		$result = add_network_option( null, $option, $value, '', 'no' );
 		if ( ! $result ) {
 			return false;
 		}
@@ -469,8 +469,8 @@ function delete_global_option( $option ) {
 	 */
 	do_action( 'pre_delete_global_option_' . $option, $option );
 
-	if ( ! is_multisite() ) {
-		$result = delete_option( $option );
+	if ( ! is_multinetwork() ) {
+		$result = delete_network_option( null, $option );
 	} else {
 		$result = $wpdb->delete( $wpdb->global_options, array( 'option_name' => $option ) );
 		if ( ! wp_installing() ) {

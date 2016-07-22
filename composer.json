@@ -1,6 +1,6 @@
 {
   "name": "felixarntz/global-admin",
-  "description": "Introduces a global admin in WordPress. Works best with WP Multi Network.",
+  "description": "Introduces a global admin panel in WordPress. Works best with WP Multi Network.",
   "version": "1.0.0",
   "license": "GPL-3.0",
   "type": "wordpress-plugin",
