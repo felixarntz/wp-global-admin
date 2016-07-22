@@ -15,7 +15,7 @@ if ( false !== getenv( 'WP_PLUGIN_DIR' ) ) {
 
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array(
-		'wp-multi-network/wpmn-loader.php',
+		//'wp-multi-network/wpmn-loader.php',
 		'global-admin/global-admin.php',
 	),
 );

@@ -46,14 +46,15 @@ function ga_init() {
 	}
 
 	register_global_cap( array(
-		'manage_cache',
+		'edit_user',
+		'manage_global_options',
+		'manage_global_users',
 		'manage_networks',
 		'create_networks',
 		'delete_networks',
 		'delete_network',
-		'manage_global_options',
-		'manage_global_users',
-		'edit_user',
+		'manage_cache',
+		'manage_certificates',
 	) );
 }
 
