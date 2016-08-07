@@ -96,7 +96,9 @@ function _ga_user_has_networks( $networks, $user_id ) {
 
 	$all_networks = get_networks( array( 'fields' => 'ids' ) );
 
-	if ( is_user_global_admin( $user_id ) ) {
+	$user = get_user_by( 'id', $user_id );
+
+	if ( $user->has_cap( 'manage_networks' ) ) {
 		$user_networks = $all_networks;
 	} else {
 		$user = get_userdata( $user_id );

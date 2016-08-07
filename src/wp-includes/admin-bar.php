@@ -19,7 +19,7 @@ function _ga_adjust_admin_bar( $admin_bar ) {
 		return;
 	}
 
-	if ( ! is_user_global_admin() ) {
+	if ( ! current_user_can( 'manage_networks' ) ) {
 		return;
 	}
 

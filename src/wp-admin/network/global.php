@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	require_once( dirname( __FILE__ ) . '/admin.php' );
 }
 
-if ( ! is_user_global_admin() ) {
+if ( ! current_user_can( 'manage_network_options' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to manage options for this network.', 'global-admin' ) );
 }
 
