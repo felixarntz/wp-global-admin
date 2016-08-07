@@ -69,7 +69,12 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="https://github.com/felixarntz/global-admin/wiki/Create-A-Multinetwork" target="_blank">Documentation on Creating a Multinetwork</a>', 'global-admin' ) . '</p>'
 );
 
-include( ABSPATH . 'wp-admin/admin-header.php' );
+// Only load admin header and footer files when loaded directly. Otherwise they are included by WP Core.
+$_ga_load_admin_files = ! did_action( 'in_admin_header' );
+
+if ( $_ga_load_admin_files ) {
+	include( ABSPATH . 'wp-admin/admin-header.php' );
+}
 ?>
 <div class="wrap">
 <h1><?php echo esc_html( $title ); ?></h1>
@@ -97,4 +102,6 @@ if ( $_POST ) {
 ?>
 </div>
 
-<?php include( ABSPATH . 'wp-admin/admin-footer.php' ); ?>
+<?php if ( $_ga_load_admin_files ) {
+	include( ABSPATH . 'wp-admin/admin-footer.php' );
+} ?>

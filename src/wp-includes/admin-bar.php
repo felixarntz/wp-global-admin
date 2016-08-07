@@ -23,19 +23,19 @@ function _ga_adjust_admin_bar( $admin_bar ) {
 		return;
 	}
 
-	$wp_admin_bar->add_group( array(
+	$admin_bar->add_group( array(
 		'parent' => 'my-sites',
 		'id'     => 'my-sites-global-admin',
 	) );
 
-	$wp_admin_bar->add_menu( array(
+	$admin_bar->add_menu( array(
 		'parent' => 'my-sites-global-admin',
 		'id'     => 'global-admin',
 		'title'  => __( 'Global Admin', 'global-admin' ),
 		'href'   => global_admin_url(),
 	) );
 
-	$wp_admin_bar->add_menu( array(
+	$admin_bar->add_menu( array(
 		'parent' => 'global-admin',
 		'id'     => 'global-admin-d',
 		'title'  => __( 'Dashboard' ),
@@ -51,22 +51,22 @@ function _ga_adjust_admin_bar( $admin_bar ) {
 	 * @param bool Whether to show the item. Defaults to false.
 	 */
 	if ( apply_filters( '_global_admin_show_admin_bar_networks', false ) ) {
-		$wp_admin_bar->add_menu( array(
+		$admin_bar->add_menu( array(
 			'parent' => 'global-admin',
-			'id'     => 'global-admin-d',
-			'title'  => __( 'Dashboard' ),
+			'id'     => 'global-admin-n',
+			'title'  => __( 'Networks', 'global-admin' ),
 			'href'   => add_query_arg( array( 'page' => 'networks' ), global_admin_url( 'admin.php' ) ),
 		) );
 	}
 
-	$wp_admin_bar->add_menu( array(
+	$admin_bar->add_menu( array(
 		'parent' => 'global-admin',
 		'id'     => 'global-admin-u',
 		'title'  => __( 'Users' ),
 		'href'   => global_admin_url( 'users.php' ),
 	) );
 
-	$wp_admin_bar->add_menu( array(
+	$admin_bar->add_menu( array(
 		'parent' => 'global-admin',
 		'id'     => 'global-admin-o',
 		'title'  => __( 'Settings' ),
