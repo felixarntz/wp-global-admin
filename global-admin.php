@@ -60,6 +60,7 @@ function ga_init() {
 		'manage_global_options',
 		'manage_global_users',
 		'manage_networks',
+		'list_networks',
 		'create_networks',
 		'delete_networks',
 		'manage_cache',
