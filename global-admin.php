@@ -36,6 +36,8 @@ function ga_init() {
 	require_once( dirname( __FILE__ ) . '/src/wp-includes/user.php' );
 	require_once( dirname( __FILE__ ) . '/src/wp-includes/link-template.php' );
 	require_once( dirname( __FILE__ ) . '/src/wp-includes/admin-bar.php' );
+	require_once( dirname( __FILE__ ) . '/src/wp-includes/ms-functions.php' );
+	require_once( dirname( __FILE__ ) . '/src/wp-includes/ms-default-filters.php' );
 
 	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/schema.php' );
 	require_once( dirname( __FILE__ ) . '/src/wp-admin/includes/hacks.php' );

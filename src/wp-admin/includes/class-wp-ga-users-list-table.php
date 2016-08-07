@@ -123,7 +123,7 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 	protected function get_views() {
 		global $role;
 
-		$total_users = get_user_count();
+		$total_users = get_global_user_count();
 		$global_admins = get_global_admins();
 		$total_admins = count( $global_admins );
 
