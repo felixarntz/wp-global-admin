@@ -15,7 +15,7 @@ Unfortunately some quite hacky stuff is required to be able to generate this add
 
 **This is a very early proof-of-concept, a rather experimental approach to investigate possibilities for an actual Global Administration panel in the future. Please do not use it on a production site.**
 
-Feel free to install it on your development environment - I'd suggest to add its own dedicated one since, especially in these very early stages, the plugin might mess up your environment. Contributions, ideas, feedback all welcome! Be aware that some concepts used in this plugin might be completely thrown overboard at some point. No backwards compatibility here at the moment.
+Feel free to install it on your development environment - I'd suggest to add its own dedicated one since, especially in these very early stages, the plugin might mess up your environment. Contributions, ideas, feedback all welcome! Be aware that some concepts used in this plugin might be completely thrown overboard at some point. No backwards compatibility here at the moment. There is a [Google document for discussion](https://docs.google.com/document/d/1v3jZzOyQ4ksxnOVw3Yqmh5OzjxMIPpMleS7AdlD2eiI/edit?usp=sharing) and an overview of what exactly this plugin can do / is planned to do.
 
 ## Concept
 
