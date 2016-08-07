@@ -89,3 +89,32 @@ function _ga_add_global_setup_menu_item() {
 	}
 }
 add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
+
+/**
+ * Adjusts the title for the title tag in the global administration panel.
+ *
+ * If it was in Core, it would happen directly in `wp-admin/admin-header.php`.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param string $admin_title Original admin title.
+ * @param string $title       Original title.
+ * @return string Modified admin title if in global administration panel.
+ */
+function _ga_adjust_admin_title( $admin_title, $title ) {
+	if ( ! is_global_admin() ) {
+		return $admin_title;
+	}
+
+	$new_admin_title = __( 'Global Admin', 'global-admin' );
+
+	if ( false === strpos( $admin_title, '&lsaquo;' ) ) {
+		$admin_title = sprintf( __( '%1$s &#8212; WordPress' ), $new_admin_title );
+	} else {
+		$admin_title = sprintf( __( '%1$s &lsaquo; %2$s &#8212; WordPress' ), $title, $new_admin_title );
+	}
+
+	return $admin_title;
+}
+add_filter( 'admin_title', '_ga_adjust_admin_title', 10, 2 );
