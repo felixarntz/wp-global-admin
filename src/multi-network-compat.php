@@ -116,3 +116,6 @@ function _ga_user_has_networks( $networks, $user_id ) {
 	return $user_networks;
 }
 add_filter( 'networks_pre_user_is_network_admin', '_ga_user_has_networks', 10, 2 );
+
+// Internal filter.
+add_filter( '_global_admin_show_admin_bar_networks', '__return_true' );
