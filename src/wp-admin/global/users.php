@@ -22,7 +22,10 @@ if ( isset( $_GET['action'] ) ) {
 	//TODO: process user update and redirect back
 }
 
-$wp_list_table = _get_list_table( 'WP_MS_Users_List_Table' );
+require_once ABSPATH . 'wp-admin/includes/class-wp-ms-users-list-table.php';
+require_once dirname( dirname( __FILE__ ) ) . '/includes/class-wp-ga-users-list-table.php';
+
+$wp_list_table = new WP_GA_Users_List_Table( array( 'screen' => get_current_screen() ) );
 $pagenum = $wp_list_table->get_pagenum();
 $wp_list_table->prepare_items();
 $total_pages = $wp_list_table->get_pagination_arg( 'total_pages' );

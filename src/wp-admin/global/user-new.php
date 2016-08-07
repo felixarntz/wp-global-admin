@@ -14,3 +14,5 @@ if ( ! is_multinetwork() ) {
 }
 
 //TODO: implement this, allow to grant global admin privileges
+
+wp_die( 'Work in Progress: This functionality is not yet implemented.' );

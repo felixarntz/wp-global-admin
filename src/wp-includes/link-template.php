@@ -171,4 +171,23 @@ function _ga_adjust_edit_profile_url( $url, $user_id, $scheme ) {
 }
 add_filter( 'edit_profile_url', '_ga_adjust_edit_profile_url', 10, 3 );
 
+/**
+ * Adjusts the edit user link to consider the Global Administration panel as well.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param string $link    The edit user link.
+ * @param int    $user_id The user ID.
+ * @return string The adjusted link.
+ */
+function _ga_adjust_edit_user_link( $link, $user_id ) {
+	if ( get_current_user_id() == $user_id || ! is_global_admin() ) {
+		return $link;
+	}
+
+	return add_query_arg( 'user_id', $user_id, global_admin_url( 'user-edit.php' ) );
+}
+add_filter( 'get_edit_user_link', '_ga_adjust_edit_user_link', 10, 2 );
+
 // The function `self_admin_url()` needs to be adjusted as well, but that doesn't work at this point.
