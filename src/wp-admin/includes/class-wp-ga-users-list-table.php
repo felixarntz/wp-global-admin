@@ -65,7 +65,7 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 			$args['search'] = '*' . $args['search'] . '*';
 		}
 
-		if ( $role === 'global' ) {
+		if ( $role === 'super' ) {
 			$logins = implode( "', '", get_global_admins() );
 			$args['include'] = $wpdb->get_col( "SELECT ID FROM $wpdb->users WHERE user_login IN ('$logins')" );
 		}
@@ -127,11 +127,11 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 		$global_admins = get_global_admins();
 		$total_admins = count( $global_admins );
 
-		$class = $role != 'global' ? ' class="current"' : '';
+		$class = $role != 'super' ? ' class="current"' : '';
 		$role_links = array();
-		$role_links['all'] = "<a href='" . global_admin_url( 'users.php' ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_users, 'users', 'global-admin' ), number_format_i18n( $total_users ) ) . '</a>';
-		$class = $role === 'global' ? ' class="current"' : '';
-		$role_links['global'] = "<a href='" . global_admin_url( 'users.php?role=global' ) . "'$class>" . sprintf( _n( 'Global Admin <span class="count">(%s)</span>', 'Global Admins <span class="count">(%s)</span>', $total_admins, 'global-admin' ), number_format_i18n( $total_admins ) ) . '</a>';
+		$role_links['all'] = "<a href='" . global_admin_url( 'users.php' ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_users, 'users' ), number_format_i18n( $total_users ) ) . '</a>';
+		$class = $role === 'super' ? ' class="current"' : '';
+		$role_links['super'] = "<a href='" . global_admin_url( 'users.php?role=super' ) . "'$class>" . sprintf( _n( 'Super Admin <span class="count">(%s)</span>', 'Super Admins <span class="count">(%s)</span>', $total_admins ), number_format_i18n( $total_admins ) ) . '</a>';
 
 		return $role_links;
 	}
@@ -153,7 +153,7 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 
 		?><strong><a href="<?php echo $edit_link; ?>" class="edit"><?php echo $user->user_login; ?></a><?php
 		if ( in_array( $user->user_login, $global_admins ) ) {
-			echo ' - ' . __( 'Global Admin', 'global-admin' );
+			echo ' - ' . __( 'Super Admin' );
 		}
 		?></strong>
 	<?php

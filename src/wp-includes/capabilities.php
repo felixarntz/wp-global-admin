@@ -64,6 +64,8 @@ add_filter( 'map_meta_cap', 'ga_map_meta_cap', 10, 4 );
 /**
  * Returns the global admins for this setup.
  *
+ * In a Core implementation we could instead use a modified version of `get_super_admins()`.
+ *
  * @since 1.0.0
  *
  * @return array Array of global admin logins.
@@ -76,7 +78,7 @@ function get_global_admins() {
 		return $global_admins;
 	}
 
-	return get_global_option( 'global_admins', array() );
+	return get_global_option( 'super_admins', array() );
 }
 endif;
 
@@ -85,6 +87,8 @@ endif;
  *
  * Naming of this function is sub-optimal. However it cannot be called `is_global_admin()`
  * since that function already exists to determine whether we are in the global admin backend.
+ *
+ * In a Core implementation we could instead use a modified version of `is_super_admin()`.
  *
  * @since 1.0.0
  *

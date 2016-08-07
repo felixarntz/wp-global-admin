@@ -64,14 +64,14 @@ function populate_global( $email = '', $global_name = '' ) {
 
 	$global_admins = array( $user->user_login );
 	if ( is_multinetwork() ) {
-		$global_admins = get_global_option( 'global_admins', array() );
+		$global_admins = get_global_option( 'super_admins', array() );
 	}
 
 	$global_options = array(
 		'global_name'   => $global_name,
 		'admin_email'   => $email,
 		'admin_user_id' => $user->ID,
-		'global_admins' => $global_admins,
+		'super_admins'  => $global_admins,
 	);
 
 	/**
