@@ -7,13 +7,13 @@
  */
 
 /**
- * If this is a Multiglobal setup.
+ * If this is a Multinetwork setup.
  *
  * @since 1.0.0
  *
- * @return bool True if a Multiglobal, false otherwise.
+ * @return bool True if a Multinetwork, false otherwise.
  */
-if ( !function_exists( 'is_multiglobal' ) ) :
+if ( !function_exists( 'is_multinetwork' ) ) :
 function is_multinetwork() {
 	if ( ! is_multisite() ) {
 		return false;
@@ -43,7 +43,6 @@ endif;
  */
 if ( ! function_exists( 'is_global_admin' ) ) :
 function is_global_admin() {
-	//TODO: Trac Ticket
 	// It's not possible in a plugin to override this, therefore skip this check.
 	// Unfortunately this can also cause issues with `is_blog_admin()` because it will return
 	// true if we're in the global admin.

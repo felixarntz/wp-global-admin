@@ -25,15 +25,9 @@ function _ga_adjust_network_menus() {
 	if ( is_multinetwork() ) {
 		add_action( 'global_admin_menu', array( $admin, 'network_admin_menu' ) );
 		add_action( 'global_admin_menu', '_ga_adjust_networks_menu_position', 11 );
-	} elseif ( defined( 'WP_ALLOW_MULTINETWORK' ) && WP_ALLOW_MULTINETWORK ) {
-		add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
 	}
 }
 add_action( 'init', '_ga_adjust_network_menus' );
-
-function _ga_add_global_setup_menu_item() {
-	add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'src/wp-admin/network/global.php' );
-}
 
 /**
  * Adjusts the position of the Networks admin menu in the Global Administration panel.

@@ -47,7 +47,8 @@ if ( ! is_multinetwork() ) {
 }
 
 $current_network = get_network();
-$main_network = get_network( get_main_network_id() );
+$main_network_id = get_main_network_id();
+$main_network = get_network( $main_network_id );
 
 $redirect_global_admin_request = 0 !== strcasecmp( $current_network->domain, $main_network->domain ) || 0 !== strcasecmp( $current_network->path, $main_network->path );
 
@@ -65,5 +66,6 @@ if ( $redirect_global_admin_request ) {
 }
 
 unset( $current_network );
+unset( $main_network_id );
 unset( $main_network );
 unset( $redirect_global_admin_request );

@@ -171,4 +171,4 @@ function _ga_adjust_edit_profile_url( $url, $user_id, $scheme ) {
 }
 add_filter( 'edit_profile_url', '_ga_adjust_edit_profile_url', 10, 3 );
 
-//TODO: Trac ticket for a filter in `self_admin_url()`
+// The function `self_admin_url()` needs to be adjusted as well, but that doesn't work at this point.

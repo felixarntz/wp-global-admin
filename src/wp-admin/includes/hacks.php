@@ -70,3 +70,20 @@ function _ga_trigger_global_admin_menu_hook() {
 	do_action( 'global_admin_menu', '' );
 }
 add_action( 'admin_menu', '_ga_trigger_global_admin_menu_hook', 1 );
+
+/**
+ * Adds the Global Setup screen to the network administration menu if necessary.
+ *
+ * If it was in Core, that would happen directly in `wp-admin/network/menu.php`.
+ *
+ * @since 1.0.0
+ * @access private
+ */
+function _ga_add_global_setup_menu_item() {
+	if ( ! defined( 'WP_ALLOW_MULTINETWORK' ) || ! WP_ALLOW_MULTINETWORK ) {
+		return;
+	}
+
+	add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'src/wp-admin/network/global.php' );
+}
+add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
