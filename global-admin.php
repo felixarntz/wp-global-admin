@@ -52,7 +52,6 @@ function ga_init() {
 		'manage_networks',
 		'create_networks',
 		'delete_networks',
-		'delete_network',
 		'manage_cache',
 		'manage_certificates',
 	) );
