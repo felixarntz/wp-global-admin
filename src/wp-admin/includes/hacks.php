@@ -80,10 +80,12 @@ add_action( 'admin_menu', '_ga_trigger_global_admin_menu_hook', 1 );
  * @access private
  */
 function _ga_add_global_setup_menu_item() {
-	if ( ! defined( 'WP_ALLOW_MULTINETWORK' ) || ! WP_ALLOW_MULTINETWORK ) {
-		return;
+	if ( is_multinetwork() && ! is_main_network() ) {
+		//TODO: add Delete Network screen
 	}
 
-	add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'src/wp-admin/network/global.php' );
+	if ( defined( 'WP_ALLOW_MULTINETWORK' ) && WP_ALLOW_MULTINETWORK && ! is_multinetwork() ) {
+		add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'src/wp-admin/network/global.php' );
+	}
 }
 add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
