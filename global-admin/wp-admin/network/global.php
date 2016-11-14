@@ -24,7 +24,7 @@ if ( is_multinetwork() && ! is_global_admin() ) {
 	exit;
 }
 
-require_once( GA_PATH . 'src/wp-admin/includes/global.php' );
+require_once( GA_PATH . 'global-admin/wp-admin/includes/global.php' );
 
 // This would be it if it was part of Core.
 //require_once( ABSPATH . 'wp-admin/includes/global.php' );

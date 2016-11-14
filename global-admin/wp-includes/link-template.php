@@ -128,7 +128,7 @@ function global_admin_url( $path = '', $scheme = 'admin' ) {
 	}
 
 	$plugin_dir_relative = str_replace( home_url( '/' ), '', GA_URL );
-	$url = global_home_url( $plugin_dir_relative . 'src/wp-admin/global/', $scheme );
+	$url = global_home_url( $plugin_dir_relative . 'global-admin/wp-admin/global/', $scheme );
 
 	// This would be used if it was part of Core.
 	//$url = global_site_url( 'wp-admin/global/', $scheme );

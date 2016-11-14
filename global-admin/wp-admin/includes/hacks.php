@@ -32,7 +32,7 @@ function _ga_create_global_admin_menu() {
 
 	remove_all_actions( '_admin_menu' );
 
-	require_once( GA_PATH . 'src/wp-admin/global/menu.php' );
+	require_once( GA_PATH . 'global-admin/wp-admin/global/menu.php' );
 
 	/**
 	 * Fires before the administration menu loads in the Global Admin.
@@ -85,7 +85,7 @@ function _ga_add_global_setup_menu_item() {
 	}
 
 	if ( defined( 'WP_ALLOW_MULTINETWORK' ) && WP_ALLOW_MULTINETWORK && ! is_multinetwork() ) {
-		add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'src/wp-admin/network/global.php' );
+		add_submenu_page( 'settings.php', __( 'Global Setup', 'global-admin' ), __( 'Global Setup', 'global-admin' ), 'manage_networks', GA_PATH . 'global-admin/wp-admin/network/global.php' );
 	}
 }
 add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
