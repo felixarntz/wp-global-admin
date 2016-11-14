@@ -44,7 +44,7 @@ function _ga_create_global_admin_menu() {
 	 */
 	do_action( '_global_admin_menu' );
 }
-add_action( '_admin_menu', '_ga_create_global_admin_menu', 1 );
+add_action( '_admin_menu', '_ga_create_global_admin_menu', 0 );
 
 /**
  * This is another incredibly hacky attempt to work with menus in the Global Admin.
@@ -69,7 +69,7 @@ function _ga_trigger_global_admin_menu_hook() {
 	 */
 	do_action( 'global_admin_menu', '' );
 }
-add_action( 'admin_menu', '_ga_trigger_global_admin_menu_hook', 1 );
+add_action( 'admin_menu', '_ga_trigger_global_admin_menu_hook', 0 );
 
 /**
  * Adds the Global Setup screen to the network administration menu if necessary.
