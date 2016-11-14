@@ -62,16 +62,11 @@ function populate_global( $email = '', $global_name = '' ) {
 		$user = wp_get_current_user();
 	}
 
-	$global_admins = array( $user->user_login );
-	if ( is_multinetwork() ) {
-		$global_admins = get_global_option( 'super_admins', array() );
-	}
+	$user->add_global_role( 'administrator' );
 
 	$global_options = array(
 		'global_name'   => $global_name,
 		'admin_email'   => $email,
-		'admin_user_id' => $user->ID,
-		'super_admins'  => $global_admins,
 	);
 
 	/**

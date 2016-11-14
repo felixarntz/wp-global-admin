@@ -7,10 +7,7 @@
  */
 
 /**
- * Filters the meta map process to distinguish between super admins and global admins.
- *
- * Capabilities that should only be available to global admins, but not to super admins must be
- * registered via `register_global_cap()`.
+ * Filters the meta map process to handle complex capability checks.
  *
  * Global admins have all capabilities. This function ensures that as well (in the rare case that
  * a global admin is not technically a super admin for a specific network). Regarding this hacky
@@ -25,34 +22,22 @@
  * @return array The mapped capabilities.
  */
 function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
-	global $_global_capabilities;
-
 	if ( ! is_multinetwork() ) {
 		return $caps;
 	}
 
-	// Global admins have all capabilities, so this hack ensures it.
-	if ( is_user_global_admin( $user_id ) ) {
-		return array( 'exist' );
-	}
-
-	if ( ! isset( $_global_capabilities ) ) {
-		return $caps;
-	}
-
-	if ( ! in_array( $cap, $_global_capabilities ) ) {
-		return $caps;
-	}
-
 	switch ( $cap ) {
-		case 'edit_user':
-			if ( ! is_user_global_admin( $user_id ) && isset( $args[0] ) && is_user_global_admin( $args[0] ) ) {
-				$caps[] = 'do_not_allow';
-			}
+		case 'list_networks':
+		case 'create_networks':
+		case 'delete_networks':
+			$caps = array( 'manage_networks' );
 			break;
-		default:
-			if ( ! is_user_global_admin( $user_id ) ) {
-				$caps[] = 'do_not_allow';
+		case 'edit_user':
+			if ( ! current_user_can( 'manage_global_users' ) && isset( $args[0] ) ) {
+				$user = get_userdata( $args[0] );
+				if ( $user->has_cap( 'manage_global_users' ) ) {
+					$caps[] = 'do_not_allow';
+				}
 			}
 			break;
 	}
@@ -62,85 +47,67 @@ function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 add_filter( 'map_meta_cap', 'ga_map_meta_cap', 10, 4 );
 
 /**
- * Returns the global admins for this setup.
- *
- * In a Core implementation we could instead use a modified version of `get_super_admins()`.
+ * Retrieves the global WP_Global_Roles instance and instantiates it if necessary.
  *
  * @since 1.0.0
  *
- * @return array Array of global admin logins.
+ * @global WP_Global_Roles $wp_global_roles WP_Global_Roles global instance.
+ *
+ * @return WP_Global_Roles WP_Global_Roles global instance if not already instantiated.
  */
-if ( ! function_exists( 'get_global_admins' ) ) :
-function get_global_admins() {
-	global $global_admins;
+if ( ! function_exists( 'wp_global_roles' ) ) :
+function wp_global_roles() {
+	global $wp_global_roles;
 
-	if ( isset( $global_admins ) ) {
-		return $global_admins;
+	if ( ! isset( $wp_global_roles ) ) {
+		$wp_global_roles = new WP_Global_Roles();
 	}
-
-	return get_global_option( 'super_admins', array() );
+	return $wp_global_roles;
 }
 endif;
 
 /**
- * Checks whether a specific user is a global administrator.
- *
- * Naming of this function is sub-optimal. However it cannot be called `is_global_admin()`
- * since that function already exists to determine whether we are in the global admin backend.
- *
- * In a Core implementation we could instead use a modified version of `is_super_admin()`.
+ * Retrieve global role object.
  *
  * @since 1.0.0
  *
- * @param int $user_id (Optional) The ID of a user. Defaults to the current user.
- * @return bool True if the user is a global admin.
+ * @param string $role Network role name.
+ * @return WP_Global_Role|null WP_Global_Role object if found, null if the role does not exist.
  */
-if ( ! function_exists( 'is_user_global_admin' ) ) :
-function is_user_global_admin( $user_id = false ) {
-	if ( ! $user_id || $user_id == get_current_user_id() ) {
-		$user = wp_get_current_user();
-	} else {
-		$user = get_userdata( $user_id );
-	}
-
-	if ( ! $user || ! $user->exists() ) {
-		return false;
-	}
-
-	if ( ! is_multisite() ) {
-		return $user->has_cap( 'delete_users' );
-	}
-
-	if ( ! is_multinetwork() ) {
-		return $user->has_cap( 'manage_network' );
-	}
-
-	$global_admins = get_global_admins();
-
-	return in_array( $user->user_login, $global_admins );
+if ( ! function_exists( 'get_global_role' ) ) :
+function get_global_role( $role ) {
+	return wp_global_roles()->get_role( $role );
 }
 endif;
 
 /**
- * Registers a global capability.
- *
- * Any capability registered here will only be available for global administrators. If no global
- * administrator is available, they will fallback to be granted to super admins instead.
+ * Add global role, if it does not exist.
  *
  * @since 1.0.0
  *
- * @param string|array $cap A single capability or an array of capabilities to register.
+ * @param string $role Network role name.
+ * @param string $display_name Display name for role.
+ * @param array $capabilities List of capabilities, e.g. array( 'edit_posts' => true, 'delete_posts' => false );
+ * @return WP_Global_Role|null WP_Global_Role object if role is added, null if already exists.
  */
-if ( ! function_exists( 'register_global_cap' ) ) :
-function register_global_cap( $cap ) {
-	global $_global_capabilities;
-
-	$cap = (array) $cap;
-
-	if ( ! isset( $_global_capabilities ) ) {
-		$_global_capabilities = array();
+if ( ! function_exists( 'add_global_role' ) ) :
+function add_global_role( $role, $display_name, $capabilities = array() ) {
+	if ( empty( $role ) ) {
+		return;
 	}
+	return wp_global_roles()->add_role( $role, $display_name, $capabilities );
+}
+endif;
 
-	$_global_capabilities = array_unique( array_merge( $_global_capabilities, $cap ) );
+/**
+ * Remove global role, if it exists.
+ *
+ * @since 1.0.0
+ *
+ * @param string $role Network role name.
+ */
+if ( ! function_exists( 'remove_global_role' ) ) :
+function remove_global_role( $role ) {
+	wp_global_roles()->remove_role( $role );
 }
 endif;

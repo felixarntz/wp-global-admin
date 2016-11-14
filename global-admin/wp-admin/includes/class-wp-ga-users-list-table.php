@@ -66,8 +66,7 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 		}
 
 		if ( $role === 'super' ) {
-			$logins = implode( "', '", get_global_admins() );
-			$args['include'] = $wpdb->get_col( "SELECT ID FROM $wpdb->users WHERE user_login IN ('$logins')" );
+			//TODO: support query for global administrators
 		}
 
 		/*
@@ -124,7 +123,8 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 		global $role;
 
 		$total_users = get_global_user_count();
-		$global_admins = get_global_admins();
+		//TODO: support view for global administrators
+		$global_admins = array();
 		$total_admins = count( $global_admins );
 
 		$class = $role != 'super' ? ' class="current"' : '';
@@ -145,7 +145,8 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 	 * @param WP_User $user The current WP_User object.
 	 */
 	public function column_username( $user ) {
-		$global_admins = get_global_admins();
+		//TODO: support check for whether this is a global administrator.
+		$global_admins = array();
 		$avatar	= get_avatar( $user->user_email, 32 );
 		$edit_link = esc_url( add_query_arg( 'wp_http_referer', urlencode( wp_unslash( $_SERVER['REQUEST_URI'] ) ), get_edit_user_link( $user->ID ) ) );
 
@@ -153,7 +154,7 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 
 		?><strong><a href="<?php echo $edit_link; ?>" class="edit"><?php echo $user->user_login; ?></a><?php
 		if ( in_array( $user->user_login, $global_admins ) ) {
-			echo ' - ' . __( 'Super Admin' );
+			echo ' - ' . __( 'Global Administrator' );
 		}
 		?></strong>
 	<?php

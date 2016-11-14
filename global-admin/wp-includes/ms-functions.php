@@ -202,6 +202,8 @@ function _ga_fix_network_user_counts( $user_count ) {
 		return $user_count;
 	}
 
+	//TODO: When the time is right, this function should use the network_id argument that WP Network Roles introduces.
+
 	$site_ids = get_sites( array( 'fields' => 'ids', 'network_id' => get_current_network_id() ) );
 
 	$args = array(
