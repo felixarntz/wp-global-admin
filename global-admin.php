@@ -57,6 +57,7 @@ function ga_init() {
 
 	register_global_cap( array(
 		'edit_user',
+		'manage_global',
 		'manage_global_options',
 		'manage_global_users',
 		'manage_networks',
