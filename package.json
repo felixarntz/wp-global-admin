@@ -1,7 +1,7 @@
 {
   "name": "global-admin",
   "version": "1.0.0",
-  "description": "Introduces a global admin panel in WordPress. Works best with WP Multi Network.",
+  "description": "Introduces a global admin panel in WordPress. Requires WP Network Roles. Works best with WP Multi Network.",
   "keywords": [
     "wordpress",
     "plugin",

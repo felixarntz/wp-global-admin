@@ -6,12 +6,16 @@
 
 # Global Admin
 
-Introduces a global admin panel in WordPress. Works best with WP Multi Network.
+Introduces a global admin panel in WordPress. Requires WP Network Roles. Works best with WP Multi Network.
 
 While WordPress brings along the possibility to have multiple networks, there's no UI to manage them. The WP Multi Network plugin does a great job in exposing a UI to the user, however its default setup needs to be adjusted in most cases since it exposes the network management UI to all super admins.
 
-Therefore this plugin is built on top of WP Multi Network. It does not have the plugin as a dependency, but won't make a lot of sense unless. The plugin integrates deeply into WordPress Core to offer a new kind of backend, the Global Administration panel, which follows similar concepts like the Network Administration and User Administration panels.
+Therefore this plugin is built on top of [WP Multi Network](https://github.com/stuttter/wp-multi-network). It does not have the plugin as a dependency, but won't make a lot of sense unless. The plugin integrates deeply into WordPress Core to offer a new kind of backend, the Global Administration panel, which follows similar concepts like the Network Administration and User Administration panels.
 Unfortunately some quite hacky stuff is required to be able to generate this additional backend from a plugin, but that's the only way to make it work unless it's part of WordPress Core.
+
+What is required for this plugin though, is the plugin [WP Network Roles](https://github.com/felixarntz/wp-network-roles) which implements a real network-based role system. The Global Admin plugin is built on top of that to implement a similar role system globally.
+
+The plugin also supports [WP User Signups](https://github.com/stuttter/wp-user-signups) properly.
 
 **This is a very early proof-of-concept, a rather experimental approach to investigate possibilities for an actual Global Administration panel in the future. Please do not use it on a production site.**
 

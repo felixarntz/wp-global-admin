@@ -13,7 +13,7 @@ License:           GNU General Public License v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              global admin, network, multisite, multinetwork
 
-Introduces a global admin panel in WordPress. Works best with WP Multi Network.
+Introduces a global admin panel in WordPress. Requires WP Network Roles. Works best with WP Multi Network.
 
 == Description ==
 
