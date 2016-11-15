@@ -55,6 +55,9 @@ function ga_init() {
 	if ( is_plugin_active( 'wp-multi-network/wpmn-loader.php' ) ) {
 		require_once( GA_PATH . 'global-admin/multi-network-compat.php' );
 	}
+	if ( is_plugin_active( 'wp-user-signups/wp-user-signups.php' ) ) {
+		require_once( GA_PATH . 'global-admin/user-signups-compat.php' );
+	}
 
 	if ( is_multinetwork() ) {
 		ga_register_table();
@@ -96,8 +99,9 @@ function ga_populate_roles() {
 		'manage_global_themes',
 		'manage_global_plugins',
 		'manage_global_options',
-		// The following capabilities are part of WP Spider Cache and WP Encrypt respectively.
+		// The following capabilities are part of WP Spider Cache, WP User Signups and WP Encrypt respectively.
 		'manage_cache',
+		'manage_user_signups',
 		'manage_certificates',
 	), true ) );
 

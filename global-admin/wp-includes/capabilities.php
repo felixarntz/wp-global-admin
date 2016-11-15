@@ -32,6 +32,14 @@ function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 		case 'delete_networks':
 			$caps = array( 'manage_networks' );
 			break;
+		case 'create_user_signups':
+		case 'edit_user_signups':
+		case 'activate_signup':
+		case 'delete_signup':
+		case 'edit_signup':
+		case 'resend_signup':
+			$caps = array( 'manage_user_signups' );
+			break;
 		case 'edit_user':
 			if ( ! current_user_can( 'manage_global_users' ) && isset( $args[0] ) ) {
 				$user = get_userdata( $args[0] );
