@@ -189,5 +189,8 @@ if ( version_compare( $GLOBALS['wp_version'], '4.7-beta3', '<' ) ) {
 	add_action( 'network_admin_notices', 'ga_requirements_notice_wordpress' );
 } else {
 	add_action( 'plugins_loaded', 'ga_init' );
-	add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
+
+	if ( did_action( 'muplugins_loaded' ) ) {
+		add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
+	}
 }
