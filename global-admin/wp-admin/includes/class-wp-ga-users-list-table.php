@@ -66,7 +66,7 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 		}
 
 		if ( $role === 'global' ) {
-			//TODO: support query for global administrators
+			$args['login__in'] = get_global_administrators();
 		}
 
 		/*
