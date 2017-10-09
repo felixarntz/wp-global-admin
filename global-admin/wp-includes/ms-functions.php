@@ -192,10 +192,13 @@ endif;
  * @since 1.0.0
  * @access private
  *
- * @param int $user_count The original number of users.
+ * @param int    $user_count     The original number of users.
+ * @param int    $old_user_count The old number of users.
+ * @param string $option         The option name.
+ * @param int    $network_id     Network ID for which the option is updated.
  * @return int The modified number of users.
  */
-function _ga_fix_network_user_counts( $user_count ) {
+function _ga_fix_network_user_counts( $user_count, $old_user_count, $option, $network_id ) {
 	global $wpdb;
 
 	if ( ! is_multinetwork() ) {
@@ -216,12 +219,12 @@ function _ga_fix_network_user_counts( $user_count ) {
 	if ( $supports_user_network_query ) {
 		$args = array(
 			'number'     => 20,
-			'network_id' => get_current_network_id(),
+			'network_id' => $network_id,
 			//TODO: check for 'spam' and 'deleted'
 		);
 	} else {
 		//TODO: If there's ever a user-to-network association, that should be used here.
-		$site_ids = get_sites( array( 'fields' => 'ids', 'network_id' => get_current_network_id() ) );
+		$site_ids = get_sites( array( 'fields' => 'ids', 'network_id' => $network_id ) );
 		if ( count( $site_ids ) > 20 ) {
 			// This query is really terrible, and with two many site IDs it just becomes too much to handle.
 			return $user_count;
@@ -244,4 +247,4 @@ function _ga_fix_network_user_counts( $user_count ) {
 
 	return $user_query->total_users;
 }
-add_filter( 'pre_update_site_option_user_count', '_ga_fix_network_user_counts', 10, 1 );
+add_filter( 'pre_update_site_option_user_count', '_ga_fix_network_user_counts', 10, 4 );
