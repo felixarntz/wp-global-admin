@@ -36,8 +36,10 @@ get_current_screen()->set_help_sidebar(
 if ( $_POST ) {
 	check_admin_referer( 'global-options' );
 
-	//TODO: process global settings
-	$options = array();
+	$options = array(
+		'global_name',
+		'admin_email',
+	);
 
 	foreach ( $options as $option_name ) {
 		if ( ! isset( $_POST[ $option_name ] ) ) {
@@ -65,7 +67,24 @@ if ( isset( $_GET['updated'] ) ) {
 	<form method="post" action="settings.php" novalidate="novalidate">
 		<?php wp_nonce_field( 'global-options' ); ?>
 
-		<!-- TODO: fields go here -->
+		<table class="form-table">
+			<tr>
+				<th scope="row"><label for="global_name"><?php _e( 'Global Title', 'global-admin' ) ?></label></th>
+				<td>
+					<input name="global_name" type="text" id="global_name" class="regular-text" value="<?php echo esc_attr( get_global_option( 'global_name' ) ) ?>" />
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="admin_email"><?php _e( 'Global Admin Email', 'global-admin' ) ?></label></th>
+				<td>
+					<input name="admin_email" type="email" id="admin_email" aria-describedby="admin-email-desc" class="regular-text" value="<?php echo esc_attr( get_global_option( 'admin_email' ) ) ?>" />
+					<p class="description" id="admin-email-desc">
+						<?php _e( 'This address is used for admin purposes.', 'global-admin' ); ?>
+					</p>
+				</td>
+			</tr>
+		</table>
 
 		<?php submit_button(); ?>
 	</form>
