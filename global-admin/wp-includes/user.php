@@ -26,9 +26,12 @@ function _ga_adjust_users_list_table_query_args( $args ) {
 		return $args;
 	}
 
-	//TODO: When the time is right, this function should use the network_id argument that WP Network Roles introduces.
-
+	//TODO: If there's ever a user-to-network association, that should be used here.
 	$site_ids = get_sites( array( 'fields' => 'ids', 'network_id' => get_current_network_id() ) );
+	if ( count( $site_ids ) > 20 ) {
+		// This query is really terrible, and with two many site IDs it just becomes too much to handle.
+		return $args;
+	}
 
 	// That's a large meta query, but it's all we can do here at this point.
 	$site_queries = array();
