@@ -162,11 +162,11 @@ endif;
  * @return string Possibly modified URL.
  */
 function _ga_adjust_self_admin_url( $url, $path, $scheme ) {
-	if ( is_global_admin() ) {
-		return global_admin_url( $path, $scheme );
+	if ( ! is_global_admin() ) {
+		return $url;
 	}
 
-	return $url;
+	return global_admin_url( $path, $scheme );
 }
 add_filter( 'self_admin_url', '_ga_adjust_self_admin_url', 10, 3 );
 
