@@ -209,5 +209,3 @@ function _ga_adjust_edit_user_link( $link, $user_id ) {
 	return add_query_arg( 'user_id', $user_id, global_admin_url( 'user-edit.php' ) );
 }
 add_filter( 'get_edit_user_link', '_ga_adjust_edit_user_link', 10, 2 );
-
-// The function `self_admin_url()` needs to be adjusted as well, but that doesn't work at this point.
