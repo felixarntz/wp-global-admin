@@ -5,15 +5,15 @@ Plugin URI:        https://github.com/felixarntz/global-admin
 Author:            Felix Arntz
 Author URI:        https://leaves-and-love.net
 Contributors:      flixos90
-Requires at least: 4.6-beta3
-Tested up to:      4.6-beta3
+Requires at least: 4.8
+Tested up to:      4.8
 Stable tag:        1.0.0
 Version:           1.0.0
 License:           GNU General Public License v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              global admin, network, multisite, multinetwork
 
-Introduces a global admin panel in WordPress. Requires WP Network Roles. Works best with WP Multi Network.
+Introduces a global admin panel in WordPress. Works best with WP Multi Network.
 
 == Description ==
 

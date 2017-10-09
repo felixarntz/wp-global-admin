@@ -62,11 +62,10 @@ function populate_global( $email = '', $global_name = '' ) {
 		$user = wp_get_current_user();
 	}
 
-	$user->add_global_role( 'administrator' );
-
 	$global_options = array(
-		'global_name'   => $global_name,
-		'admin_email'   => $email,
+		'global_name'           => $global_name,
+		'admin_email'           => $email,
+		'global_administrators' => array( $user->user_login ),
 	);
 
 	/**

@@ -53,21 +53,3 @@ function _ga_adjust_users_list_table_query_args( $args ) {
 	return $args;
 }
 add_filter( 'users_list_table_query_args', '_ga_adjust_users_list_table_query_args', 10, 1 );
-
-/**
- * Adjusts the class that the WP Network Roles plugin uses to replace any WP_User instances.
- *
- * @since 1.0.0
- * @access private
- *
- * @param string $class_name Original class name.
- * @return string Modified class name.
- */
-function _ga_adjust_user_class_name( $class_name ) {
-	if ( ! is_multinetwork() ) {
-		return $class_name;
-	}
-
-	return 'WP_User_With_Network_And_Global_Roles';
-}
-add_filter( 'wpnr_user_class_name', '_ga_adjust_user_class_name', 10, 1 );

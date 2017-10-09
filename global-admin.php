@@ -27,21 +27,12 @@ Tags:        global admin, network, multisite, multinetwork
  * @since 1.0.0
  */
 function ga_init() {
-	if ( ! function_exists( 'wp_network_roles' ) ) {
-		add_action( 'admin_notices', 'ga_requirements_notice_network_roles' );
-		add_action( 'network_admin_notices', 'ga_requirements_notice_network_roles' );
-		return;
-	}
-
 	define( 'GA_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'GA_URL', plugin_dir_url( __FILE__ ) );
 
 	require_once( GA_PATH . 'global-admin/wp-includes/load.php' );
 	require_once( GA_PATH . 'global-admin/wp-includes/option.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/class-wp-global-role.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/class-wp-global-roles.php' );
 	require_once( GA_PATH . 'global-admin/wp-includes/capabilities.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/class-wp-user-with-network-and-global-roles.php' );
 	require_once( GA_PATH . 'global-admin/wp-includes/user.php' );
 	require_once( GA_PATH . 'global-admin/wp-includes/link-template.php' );
 	require_once( GA_PATH . 'global-admin/wp-includes/admin-bar.php' );
@@ -61,23 +52,11 @@ function ga_init() {
 
 	if ( is_multinetwork() ) {
 		ga_register_table();
-		add_action( 'setup_theme', 'ga_setup_wp_global_roles', 1 );
 	}
 
 	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
 		wp_cache_add_global_groups( array( 'global-options', 'global-transient' ) );
 	}
-}
-
-/**
- * Instantiates the WP_Global_Roles class.
- *
- * @since 1.0.0
- */
-function ga_setup_wp_global_roles() {
-	$GLOBALS['wp_global_roles'] = new WP_Global_Roles();
-
-	ga_populate_roles();
 }
 
 /**
@@ -113,42 +92,13 @@ function ga_populate_roles() {
  *
  * @since 1.0.0
  */
-function ga_requirements_notice_wordpress() {
+function ga_requirements_notice() {
 	$plugin_file = plugin_basename( __FILE__ );
 	?>
 	<div class="notice notice-warning is-dismissible">
 		<p>
 			<?php printf(
-				__( 'Please note: Global Admin requires WordPress 4.7-beta3 or higher. <a href="%s">Deactivate plugin</a>.' ),
-				wp_nonce_url(
-					add_query_arg(
-						array(
-							'action'        => 'deactivate',
-							'plugin'        => $plugin_file,
-							'plugin_status' => 'all',
-						),
-						self_admin_url( 'plugins.php' )
-					),
-					'deactivate-plugin_' . $plugin_file
-				)
-			); ?>
-		</p>
-	</div>
-	<?php
-}
-
-/**
- * Shows an admin notice if the WP Network Roles plugin is not active.
- *
- * @since 1.0.0
- */
-function ga_requirements_notice_network_roles() {
-	$plugin_file = plugin_basename( __FILE__ );
-	?>
-	<div class="notice notice-warning is-dismissible">
-		<p>
-			<?php printf(
-				__( 'Please note: Global Admin requires the plugin WP Network Roles to be installed and activated. <a href="%s">Deactivate plugin</a>.' ),
+				__( 'Please note: Global Admin requires WordPress 4.8 or higher. <a href="%s">Deactivate plugin</a>.' ),
 				wp_nonce_url(
 					add_query_arg(
 						array(
@@ -184,9 +134,9 @@ function ga_activate_everywhere( $plugins ) {
 	return $plugins;
 }
 
-if ( version_compare( $GLOBALS['wp_version'], '4.7-beta3', '<' ) ) {
-	add_action( 'admin_notices', 'ga_requirements_notice_wordpress' );
-	add_action( 'network_admin_notices', 'ga_requirements_notice_wordpress' );
+if ( version_compare( $GLOBALS['wp_version'], '4.8', '<' ) ) {
+	add_action( 'admin_notices', 'ga_requirements_notice' );
+	add_action( 'network_admin_notices', 'ga_requirements_notice' );
 } else {
 	add_action( 'plugins_loaded', 'ga_init' );
 

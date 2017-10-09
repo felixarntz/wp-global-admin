@@ -28,14 +28,14 @@ function global_site_url( $path = '', $scheme = null ) {
 		return network_site_url( $path, $scheme );
 	}
 
-	$main_site_id = get_main_network_id();
+	$main_network_id = get_main_network_id();
 
-	$main_site = get_network( $main_site_id );
+	$main_network = get_network( $main_network_id );
 
 	if ( 'relative' == $scheme ) {
-		$url = $main_site->path;
+		$url = $main_network->path;
 	} else {
-		$url = set_url_scheme( 'http://' . $main_site->domain . $main_site->path, $scheme );
+		$url = set_url_scheme( 'http://' . $main_network->domain . $main_network->path, $scheme );
 	}
 
 	if ( $path && is_string( $path ) ) {
@@ -77,9 +77,9 @@ function global_home_url( $path = '', $scheme = null ) {
 		return network_home_url( $path, $scheme );
 	}
 
-	$main_site_id = get_main_network_id();
+	$main_network_id = get_main_network_id();
 
-	$main_site = get_network( $main_site_id );
+	$main_network = get_network( $main_network_id );
 	$orig_scheme = $scheme;
 
 	if ( ! in_array( $scheme, array( 'http', 'https', 'relative' ) ) ) {
@@ -87,9 +87,9 @@ function global_home_url( $path = '', $scheme = null ) {
 	}
 
 	if ( 'relative' == $scheme ) {
-		$url = $main_site->path;
+		$url = $main_network->path;
 	} else {
-		$url = set_url_scheme( 'http://' . $main_site->domain . $main_site->path, $scheme );
+		$url = set_url_scheme( 'http://' . $main_network->domain . $main_network->path, $scheme );
 	}
 
 	if ( $path && is_string( $path ) ) {

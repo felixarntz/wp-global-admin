@@ -58,14 +58,14 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 			'fields' => 'all_with_meta'
 		);
 
-		if ( wp_is_large_network( 'users' ) ) {
+		if ( wp_is_large_setup( 'users' ) ) {
 			$args['search'] = ltrim( $args['search'], '*' );
 		} else if ( '' !== $args['search'] ) {
 			$args['search'] = trim( $args['search'], '*' );
 			$args['search'] = '*' . $args['search'] . '*';
 		}
 
-		if ( $role === 'super' ) {
+		if ( $role === 'global' ) {
 			//TODO: support query for global administrators
 		}
 
@@ -127,11 +127,11 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 		$global_admins = array();
 		$total_admins = count( $global_admins );
 
-		$class = $role != 'super' ? ' class="current"' : '';
+		$class = $role !== 'global' ? ' class="current"' : '';
 		$role_links = array();
-		$role_links['all'] = "<a href='" . global_admin_url( 'users.php' ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_users, 'users' ), number_format_i18n( $total_users ) ) . '</a>';
-		$class = $role === 'super' ? ' class="current"' : '';
-		$role_links['super'] = "<a href='" . global_admin_url( 'users.php?role=super' ) . "'$class>" . sprintf( _n( 'Super Admin <span class="count">(%s)</span>', 'Super Admins <span class="count">(%s)</span>', $total_admins ), number_format_i18n( $total_admins ) ) . '</a>';
+		$role_links['all'] = "<a href='" . global_admin_url( 'users.php' ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_users, 'users', 'global-admin' ), number_format_i18n( $total_users ) ) . '</a>';
+		$class = $role === 'global' ? ' class="current"' : '';
+		$role_links['global'] = "<a href='" . global_admin_url( 'users.php?role=global' ) . "'$class>" . sprintf( _n( 'Global Administrator <span class="count">(%s)</span>', 'Global Administrators <span class="count">(%s)</span>', $total_admins, 'global-admin' ), number_format_i18n( $total_admins ) ) . '</a>';
 
 		return $role_links;
 	}
@@ -145,15 +145,13 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 	 * @param WP_User $user The current WP_User object.
 	 */
 	public function column_username( $user ) {
-		//TODO: support check for whether this is a global administrator.
-		$global_admins = array();
 		$avatar	= get_avatar( $user->user_email, 32 );
 		$edit_link = esc_url( add_query_arg( 'wp_http_referer', urlencode( wp_unslash( $_SERVER['REQUEST_URI'] ) ), get_edit_user_link( $user->ID ) ) );
 
 		echo $avatar;
 
 		?><strong><a href="<?php echo $edit_link; ?>" class="edit"><?php echo $user->user_login; ?></a><?php
-		if ( in_array( $user->user_login, $global_admins ) ) {
+		if ( is_global_administrator( $user->ID ) ) {
 			echo ' - ' . __( 'Global Administrator' );
 		}
 		?></strong>

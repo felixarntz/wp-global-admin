@@ -33,8 +33,8 @@ var config = {
 	tags: keywords.join( ', ' ),
 	contributors: [ 'flixos90' ].join( ', ' ),
 	donateLink: false,
-	minRequired: '4.6-beta3',
-	testedUpTo: '4.6-beta3',
+	minRequired: '4.8',
+	testedUpTo: '4.8',
 	translateURI: 'https://translate.wordpress.org/projects/wp-plugins/' + pkg.name,
 	network: true
 };

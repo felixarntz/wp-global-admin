@@ -26,11 +26,38 @@ function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 		return $caps;
 	}
 
+	$global_capabilities = array(
+		'manage_global',
+		'manage_networks',
+		'manage_global_users',
+		'manage_global_themes',
+		'manage_global_plugins',
+		'manage_global_options',
+		// The following capabilities are part of WP Spider Cache, WP User Signups and WP Encrypt respectively.
+		'manage_cache',
+		'manage_user_signups',
+		'manage_certificates',
+	);
+
+	/**
+	 * Filters the capabilities that only global administrators should have in a multinetwork.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array Array of global capabilities.
+	 */
+	$global_capabilities = apply_filters( 'global_admin_capabilities', $global_capabilities );
+
 	switch ( $cap ) {
 		case 'list_networks':
 		case 'create_networks':
 		case 'delete_networks':
-			$caps = array( 'manage_networks' );
+			if ( in_array( 'manage_networks', $global_capabilities, true ) && ! is_global_administrator( $user_id ) ) {
+				$caps = array( 'do_not_allow' );
+			} else {
+				$caps = array( 'manage_networks' );
+			}
+			break;
 			break;
 		case 'create_user_signups':
 		case 'edit_user_signups':
@@ -38,7 +65,11 @@ function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 		case 'delete_signup':
 		case 'edit_signup':
 		case 'resend_signup':
-			$caps = array( 'manage_user_signups' );
+			if ( in_array( 'manage_user_signups', $global_capabilities, true ) && ! is_global_administrator( $user_id ) ) {
+				$caps = array( 'do_not_allow' );
+			} else {
+				$caps = array( 'manage_user_signups' );
+			}
 			break;
 		case 'edit_user':
 			if ( ! current_user_can( 'manage_global_users' ) && isset( $args[0] ) ) {
@@ -48,74 +79,65 @@ function ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 				}
 			}
 			break;
+		default:
+			if ( in_array( $cap, $global_capabilities, true ) && ! is_global_administrator( $user_id ) ) {
+				$caps[] = 'do_not_allow';
+			}
 	}
 
 	return $caps;
 }
 add_filter( 'map_meta_cap', 'ga_map_meta_cap', 10, 4 );
 
+if ( ! function_exists( 'get_global_administrators' ) ) :
+
 /**
- * Retrieves the global WP_Global_Roles instance and instantiates it if necessary.
+ * Retrieves a list of global administrators.
  *
  * @since 1.0.0
  *
- * @global WP_Global_Roles $wp_global_roles WP_Global_Roles global instance.
- *
- * @return WP_Global_Roles WP_Global_Roles global instance if not already instantiated.
+ * @return array List of global administrator logins.
  */
-if ( ! function_exists( 'wp_global_roles' ) ) :
-function wp_global_roles() {
-	global $wp_global_roles;
+function get_global_administrators() {
+	global $global_administrators;
 
-	if ( ! isset( $wp_global_roles ) ) {
-		$wp_global_roles = new WP_Global_Roles();
+	if ( isset( $global_administrators ) ) {
+		return $global_administrators;
 	}
-	return $wp_global_roles;
+
+	return get_global_option( 'global_administrators', array() );
 }
+
 endif;
 
+if ( ! function_exists( 'is_global_administrator' ) ) :
+
 /**
- * Retrieve global role object.
+ * Determines if a user is a global administrator.
  *
  * @since 1.0.0
  *
- * @param string $role Network role name.
- * @return WP_Global_Role|null WP_Global_Role object if found, null if the role does not exist.
+ * @param int $user_id Optional. ID of a user. Default is the current user.
+ * @return bool True if the user is a global administrator, false otherwise.
  */
-if ( ! function_exists( 'get_global_role' ) ) :
-function get_global_role( $role ) {
-	return wp_global_roles()->get_role( $role );
-}
-endif;
-
-/**
- * Add global role, if it does not exist.
- *
- * @since 1.0.0
- *
- * @param string $role Network role name.
- * @param string $display_name Display name for role.
- * @param array $capabilities List of capabilities, e.g. array( 'edit_posts' => true, 'delete_posts' => false );
- * @return WP_Global_Role|null WP_Global_Role object if role is added, null if already exists.
- */
-if ( ! function_exists( 'add_global_role' ) ) :
-function add_global_role( $role, $display_name, $capabilities = array() ) {
-	if ( empty( $role ) ) {
-		return;
+function is_global_administrator( $user_id = false ) {
+	if ( ! $user_id || $user_id == get_current_user_id() ) {
+		$user = wp_get_current_user();
+	} else {
+		$user = get_userdata( $user_id );
 	}
-	return wp_global_roles()->add_role( $role, $display_name, $capabilities );
-}
-endif;
 
-/**
- * Remove global role, if it exists.
- *
- * @since 1.0.0
- *
- * @param string $role Network role name.
- */
-if ( ! function_exists( 'remove_global_role' ) ) :
-function remove_global_role( $role ) {
-	wp_global_roles()->remove_role( $role );
+	if ( ! $user || ! $user->exists() ) {
+		return false;
+	}
+
+	if ( is_multinetwork() ) {
+		$global_admins = get_global_administrators();
+
+		return is_array( $global_admins ) && in_array( $user->user_login, $global_admins, true );
+	}
+
+	return is_super_admin( $user_id );
 }
+
 endif;
