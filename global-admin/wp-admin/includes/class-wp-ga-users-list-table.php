@@ -123,8 +123,8 @@ class WP_GA_Users_List_Table extends WP_MS_Users_List_Table {
 		global $role;
 
 		$total_users = get_global_user_count();
-		//TODO: support view for global administrators
-		$global_admins = array();
+
+		$global_admins = get_global_administrators();
 		$total_admins = count( $global_admins );
 
 		$class = $role !== 'global' ? ' class="current"' : '';
