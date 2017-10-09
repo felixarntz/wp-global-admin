@@ -202,23 +202,42 @@ function _ga_fix_network_user_counts( $user_count ) {
 		return $user_count;
 	}
 
-	//TODO: If there's ever a user-to-network association, that should be used here.
-	$site_ids = get_sites( array( 'fields' => 'ids', 'network_id' => get_current_network_id() ) );
-	if ( count( $site_ids ) > 20 ) {
-		// This query is really terrible, and with two many site IDs it just becomes too much to handle.
-		return $user_count;
-	}
+	/**
+	 * Filters whether `WP_User_Query` supports a `$network_id` argument allowing to query users of a network.
+	 *
+	 * WordPress core does not support this, but a plugin might.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool $supports_user_network_query Whether a `$network_id` argument is supported. Default false.
+	 */
+	$supports_user_network_query = apply_filters( 'global_admin_supports_user_network_query', false );
 
-	$args = array(
-		'number'     => 20,
-		'meta_query' => array( 'relation' => 'OR' ),
-		//TODO: check for 'spam' and 'deleted'
-	);
-	foreach ( $site_ids as $site_id ) {
-		$args['meta_query'][] = array(
-			'key'		=> $wpdb->get_blog_prefix( $site_id ) . 'capabilities',
-			'compare'	=> 'EXISTS',
+	if ( $supports_user_network_query ) {
+		$args = array(
+			'number'     => 20,
+			'network_id' => get_current_network_id(),
+			//TODO: check for 'spam' and 'deleted'
 		);
+	} else {
+		//TODO: If there's ever a user-to-network association, that should be used here.
+		$site_ids = get_sites( array( 'fields' => 'ids', 'network_id' => get_current_network_id() ) );
+		if ( count( $site_ids ) > 20 ) {
+			// This query is really terrible, and with two many site IDs it just becomes too much to handle.
+			return $user_count;
+		}
+
+		$args = array(
+			'number'     => 20,
+			'meta_query' => array( 'relation' => 'OR' ),
+			//TODO: check for 'spam' and 'deleted'
+		);
+		foreach ( $site_ids as $site_id ) {
+			$args['meta_query'][] = array(
+				'key'		=> $wpdb->get_blog_prefix( $site_id ) . 'capabilities',
+				'compare'	=> 'EXISTS',
+			);
+		}
 	}
 
 	$user_query = new WP_User_Query( $args );
