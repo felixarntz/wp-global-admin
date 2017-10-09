@@ -151,6 +151,26 @@ function global_admin_url( $path = '', $scheme = 'admin' ) {
 endif;
 
 /**
+ * Adjusts the self admin URL to consider the Global Administration panel.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param string $url    The complete URL including scheme and path.
+ * @param string $path   Path relative to the URL. Blank string if no path is specified.
+ * @param string $scheme The scheme to use.
+ * @return string Possibly modified URL.
+ */
+function _ga_adjust_self_admin_url( $url, $path, $scheme ) {
+	if ( is_global_admin() ) {
+		return global_admin_url( $path, $scheme );
+	}
+
+	return $url;
+}
+add_filter( 'self_admin_url', '_ga_adjust_self_admin_url', 10, 3 );
+
+/**
  * Adjusts the edit profile URL to consider the Global Administration panel as well.
  *
  * @since 1.0.0
