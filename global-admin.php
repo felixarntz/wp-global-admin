@@ -60,34 +60,6 @@ function ga_init() {
 }
 
 /**
- * Populates the default global roles.
- *
- * @since 1.0.0
- */
-function ga_populate_roles() {
-	if ( get_global_role( 'administrator' ) ) {
-		return;
-	}
-
-	$network_administrator = get_network_role( 'administrator' );
-
-	$global_administrator_capabilities = array_merge( $network_administrator->capabilities, array_fill_keys( array(
-		'manage_global',
-		'manage_networks',
-		'manage_global_users',
-		'manage_global_themes',
-		'manage_global_plugins',
-		'manage_global_options',
-		// The following capabilities are part of WP Spider Cache, WP User Signups and WP Encrypt respectively.
-		'manage_cache',
-		'manage_user_signups',
-		'manage_certificates',
-	), true ) );
-
-	add_global_role( 'administrator', __( 'Global Administrator' ), $global_administrator_capabilities );
-}
-
-/**
  * Shows an admin notice if the WordPress version installed is not supported.
  *
  * @since 1.0.0
