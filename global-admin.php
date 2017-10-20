@@ -120,6 +120,10 @@ function ga_requirements_notice() {
  * @return array Modified plugins array.
  */
 function ga_activate_everywhere( $plugins ) {
+	if ( ! is_array( $plugins ) ) {
+		$plugins = array();
+	}
+
 	if ( isset( $plugins['global-admin/global-admin.php'] ) ) {
 		return $plugins;
 	}
@@ -136,6 +140,7 @@ if ( version_compare( $GLOBALS['wp_version'], '4.8', '<' ) ) {
 	add_action( 'plugins_loaded', 'ga_init' );
 
 	if ( did_action( 'muplugins_loaded' ) ) {
+		add_filter( 'site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
 	}
 }
