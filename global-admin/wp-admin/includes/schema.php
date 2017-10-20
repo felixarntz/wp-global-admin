@@ -95,23 +95,6 @@ function populate_global( $email = '', $global_name = '' ) {
 endif;
 
 /**
- * Registers the global database table.
- *
- * @since 1.0.0
- */
-function ga_register_table() {
-	global $wpdb;
-
-	if ( isset( $wpdb->global_options ) ) {
-		return;
-	}
-
-	// In Core the property would be called `mn_global_tables`
-	$wpdb->ms_global_tables[] = 'global_options';
-	$wpdb->global_options = $wpdb->base_prefix . 'global_options';
-}
-
-/**
  * Retrieve the SQL for creating database tables.
  *
  * @since 1.0.0

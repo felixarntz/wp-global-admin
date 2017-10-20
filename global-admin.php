@@ -19,6 +19,10 @@ Tags:        global admin, network, multisite, multinetwork
  * @since 1.0.0
  */
 
+if ( ! is_multisite() ) {
+	return;
+}
+
 /**
  * Initializes the plugin.
  *
@@ -39,8 +43,10 @@ function ga_init() {
 	require_once( GA_PATH . 'global-admin/wp-includes/ms-functions.php' );
 	require_once( GA_PATH . 'global-admin/wp-includes/ms-default-filters.php' );
 
-	require_once( GA_PATH . 'global-admin/wp-admin/includes/schema.php' );
-	require_once( GA_PATH . 'global-admin/wp-admin/includes/hacks.php' );
+	if ( is_admin() ) {
+		require_once( GA_PATH . 'global-admin/wp-admin/includes/schema.php' );
+		require_once( GA_PATH . 'global-admin/wp-admin/includes/hacks.php' );
+	}
 
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	if ( is_plugin_active( 'wp-multi-network/wpmn-loader.php' ) ) {
@@ -57,6 +63,23 @@ function ga_init() {
 	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
 		wp_cache_add_global_groups( array( 'global-options', 'global-transient' ) );
 	}
+}
+
+/**
+ * Registers the global database table.
+ *
+ * @since 1.0.0
+ */
+function ga_register_table() {
+	global $wpdb;
+
+	if ( isset( $wpdb->global_options ) ) {
+		return;
+	}
+
+	// In Core the property would be called `mn_global_tables`
+	$wpdb->ms_global_tables[] = 'global_options';
+	$wpdb->global_options = $wpdb->base_prefix . 'global_options';
 }
 
 /**
