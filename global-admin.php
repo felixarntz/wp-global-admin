@@ -34,26 +34,26 @@ function ga_init() {
 	define( 'GA_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'GA_URL', plugin_dir_url( __FILE__ ) );
 
-	require_once( GA_PATH . 'global-admin/wp-includes/load.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/option.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/capabilities.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/user.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/link-template.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/admin-bar.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/ms-functions.php' );
-	require_once( GA_PATH . 'global-admin/wp-includes/ms-default-filters.php' );
+	require_once GA_PATH . 'global-admin/wp-includes/load.php';
+	require_once GA_PATH . 'global-admin/wp-includes/option.php';
+	require_once GA_PATH . 'global-admin/wp-includes/capabilities.php';
+	require_once GA_PATH . 'global-admin/wp-includes/user.php';
+	require_once GA_PATH . 'global-admin/wp-includes/link-template.php';
+	require_once GA_PATH . 'global-admin/wp-includes/admin-bar.php';
+	require_once GA_PATH . 'global-admin/wp-includes/ms-functions.php';
+	require_once GA_PATH . 'global-admin/wp-includes/ms-default-filters.php';
 
 	if ( is_admin() ) {
-		require_once( GA_PATH . 'global-admin/wp-admin/includes/schema.php' );
-		require_once( GA_PATH . 'global-admin/wp-admin/includes/hacks.php' );
+		require_once GA_PATH . 'global-admin/wp-admin/includes/schema.php';
+		require_once GA_PATH . 'global-admin/wp-admin/includes/hacks.php';
 	}
 
-	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	if ( is_plugin_active( 'wp-multi-network/wpmn-loader.php' ) ) {
-		require_once( GA_PATH . 'global-admin/multi-network-compat.php' );
+		require_once GA_PATH . 'global-admin/multi-network-compat.php';
 	}
 	if ( is_plugin_active( 'wp-user-signups/wp-user-signups.php' ) ) {
-		require_once( GA_PATH . 'global-admin/user-signups-compat.php' );
+		require_once GA_PATH . 'global-admin/user-signups-compat.php';
 	}
 
 	if ( is_multinetwork() ) {
