@@ -63,7 +63,8 @@ function _ga_adjust_networks_menu_position() {
  * @since 1.0.0
  * @access private
  *
- * @param string $url The original URL.
+ * @param string $url  The original URL.
+ * @param array  $args Additional query arguments for the URL.
  * @return string The adjusted URL.
  */
 function _ga_adjust_networks_admin_url( $url, $args ) {
@@ -71,7 +72,9 @@ function _ga_adjust_networks_admin_url( $url, $args ) {
 		return $url;
 	}
 
-	$args = wp_parse_args( $args, array( 'page' => 'networks' ) );
+	$args = wp_parse_args( $args, array(
+		'page' => 'networks',
+	) );
 
 	return add_query_arg( $args, global_admin_url( 'admin.php' ) );
 }
@@ -94,7 +97,9 @@ function _ga_user_has_networks( $networks, $user_id ) {
 		return $networks;
 	}
 
-	$all_networks = get_networks( array( 'fields' => 'ids' ) );
+	$all_networks = get_networks( array(
+		'fields' => 'ids',
+	) );
 
 	$user = get_user_by( 'id', $user_id );
 

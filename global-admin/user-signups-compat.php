@@ -43,8 +43,8 @@ function _ga_adjust_signups_menu_item() {
 	}
 
 	foreach ( $hooks as $hook ) {
-		add_action( "load-{$hook}", 'wp_user_signups_handle_actions'     );
-		add_action( "load-{$hook}", 'wp_user_signups_load_list_table'    );
+		add_action( "load-{$hook}", 'wp_user_signups_handle_actions' );
+		add_action( "load-{$hook}", 'wp_user_signups_load_list_table' );
 		add_action( "load-{$hook}", 'wp_user_signups_add_screen_options' );
 	}
 }
@@ -55,16 +55,18 @@ function _ga_adjust_signups_menu_item() {
  * @since 1.0.0
  * @access private
  *
- * @param string $url The original URL.
+ * @param string $url       The original URL.
+ * @param string $admin_url The base URL to the admin area.
+ * @param array  $args      Additional query arguments for the URL.
  * @return string The adjusted URL.
  */
-function _ga_adjust_signups_admin_url( $url, $admin_url, $r, $args ) {
+function _ga_adjust_signups_admin_url( $url, $admin_url, $args ) {
 	if ( ! is_multinetwork() ) {
 		return $url;
 	}
 
 	$admin_url = global_admin_url( 'admin.php' );
 
-	return add_query_arg( $r, $admin_url );
+	return add_query_arg( $args, $admin_url );
 }
-add_filter( 'wp_user_signups_admin_url', '_ga_adjust_signups_admin_url', 10, 4 );
+add_filter( 'wp_user_signups_admin_url', '_ga_adjust_signups_admin_url', 10, 3 );
