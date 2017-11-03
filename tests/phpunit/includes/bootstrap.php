@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ContentTypes
+ * @package WPGlobalAdmin
  * @subpackage Tests
  */
 
@@ -16,7 +16,7 @@ if ( false !== getenv( 'WP_PLUGIN_DIR' ) ) {
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array(
 		//'wp-multi-network/wpmn-loader.php',
-		'global-admin/global-admin.php',
+		'wp-global-admin/wp-global-admin.php',
 	),
 );
 
@@ -33,6 +33,6 @@ require $test_root . '/includes/bootstrap.php';
 require_once dirname( __FILE__ ) . '/factory.php';
 require_once dirname( __FILE__ ) . '/testcase.php';
 
-echo "Installing Global Admin...\n";
+echo "Installing WP Global Admin...\n";
 
-activate_plugin( 'global-admin/global-admin.php' );
+activate_plugin( 'wp-global-admin/wp-global-admin.php' );

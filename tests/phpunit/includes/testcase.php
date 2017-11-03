@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ContentTypes
+ * @package WPGlobalAdmin
  * @subpackage Tests
  */
 
