@@ -29,7 +29,7 @@ var config = {
 	description: pkg.description,
 	version: pkg.version,
 	license: 'GNU General Public License v3',
-	licenseURI: p'http://www.gnu.org/licenses/gpl-3.0.html',
+	licenseURI: 'http://www.gnu.org/licenses/gpl-3.0.html',
 	tags: keywords.join( ', ' ),
 	contributors: [ 'flixos90' ].join( ', ' ),
 	donateLink: false,
