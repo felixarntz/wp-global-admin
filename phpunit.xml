@@ -22,7 +22,7 @@
 
 	<filter>
 		<whitelist>
-			<directory>./global-admin</directory>
+			<directory>./wp-global-admin</directory>
 		</whitelist>
 	</filter>
 </phpunit>

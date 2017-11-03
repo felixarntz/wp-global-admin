@@ -1,10 +1,10 @@
-[![Build Status](https://api.travis-ci.org/felixarntz/global-admin.png?branch=master)](https://travis-ci.org/felixarntz/global-admin)
-[![Code Climate](https://codeclimate.com/github/felixarntz/global-admin/badges/gpa.svg)](https://codeclimate.com/github/felixarntz/global-admin)
-[![Test Coverage](https://codeclimate.com/github/felixarntz/global-admin/badges/coverage.svg)](https://codeclimate.com/github/felixarntz/global-admin/coverage)
-[![Latest Stable Version](https://poser.pugx.org/felixarntz/global-admin/version)](https://packagist.org/packages/felixarntz/global-admin)
-[![License](https://poser.pugx.org/felixarntz/global-admin/license)](https://packagist.org/packages/felixarntz/global-admin)
+[![Build Status](https://api.travis-ci.org/felixarntz/wp-global-admin.png?branch=master)](https://travis-ci.org/felixarntz/wp-global-admin)
+[![Code Climate](https://codeclimate.com/github/felixarntz/wp-global-admin/badges/gpa.svg)](https://codeclimate.com/github/felixarntz/wp-global-admin)
+[![Test Coverage](https://codeclimate.com/github/felixarntz/wp-global-admin/badges/coverage.svg)](https://codeclimate.com/github/felixarntz/wp-global-admin/coverage)
+[![Latest Stable Version](https://poser.pugx.org/felixarntz/wp-global-admin/version)](https://packagist.org/packages/felixarntz/wp-global-admin)
+[![License](https://poser.pugx.org/felixarntz/wp-global-admin/license)](https://packagist.org/packages/felixarntz/wp-global-admin)
 
-# Global Admin
+# WP Global Admin
 
 Introduces a global admin panel in WordPress. Works best with WP Multi Network.
 
@@ -21,7 +21,7 @@ Feel free to install it on your development environment - I'd suggest to add its
 
 ## Concept
 
-For an introduction about some of the concepts of the plugin, please read the [wiki](https://github.com/felixarntz/global-admin/wiki).
+For an introduction about some of the concepts of the plugin, please read the [wiki](https://github.com/felixarntz/wp-global-admin/wiki).
 
 ## Compatibility
 

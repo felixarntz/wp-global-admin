@@ -21,7 +21,7 @@ var keywords = parseKeywords( pkg.keywords );
 
 var config = {
 	pluginSlug: pkg.name,
-	pluginName: 'Global Admin',
+	pluginName: 'WP Global Admin',
 	pluginURI: pkg.homepage,
 	author: pkg.author.name,
 	authorURI: pkg.author.url,
@@ -94,7 +94,7 @@ var uglify = require( 'gulp-uglify' );
 
 var paths = {
 	php: {
-		files: [ './*.php', './global-admin/**/*.php' ]
+		files: [ './*.php', './wp-global-admin/**/*.php' ]
 	},
 	sass: {
 		files: [ './assets/src/sass/**/*.scss' ],

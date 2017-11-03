@@ -1,5 +1,5 @@
 {
-  "name": "global-admin",
+  "name": "wp-global-admin",
   "version": "1.0.0",
   "description": "Introduces a global admin panel in WordPress. Works best with WP Multi Network.",
   "keywords": [
@@ -15,13 +15,13 @@
     "email": "felix-arntz@leaves-and-love.net",
     "url": "https://leaves-and-love.net"
   },
-  "homepage": "https://github.com/felixarntz/global-admin",
+  "homepage": "https://github.com/felixarntz/wp-global-admin",
   "repository": {
     "type": "git",
-    "url": "git://github.com/felixarntz/global-admin.git"
+    "url": "git://github.com/felixarntz/wp-global-admin.git"
   },
   "bugs": {
-    "url" : "https://github.com/felixarntz/global-admin/issues"
+    "url" : "https://github.com/felixarntz/wp-global-admin/issues"
   },
   "license": "GPL-3.0",
   "engines": {

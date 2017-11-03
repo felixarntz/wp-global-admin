@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # main config
-PLUGINSLUG="global-admin"
+PLUGINSLUG="wp-global-admin"
 CURRENTDIR=`pwd`
 MAINFILE="$PLUGINSLUG.php" # This should be the name of your main php file in the WordPress plugin
 DEFAULT_EDITOR="/usr/bin/vim"
