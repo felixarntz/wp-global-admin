@@ -19,10 +19,6 @@
  * Tags:        global admin, network, multisite, multinetwork
  */
 
-if ( ! is_multisite() ) {
-	return;
-}
-
 /**
  * Initializes the plugin.
  *
@@ -140,7 +136,7 @@ if ( version_compare( $GLOBALS['wp_version'], '4.8', '<' ) ) {
 	add_action( 'plugins_loaded', 'ga_init' );
 
 	if ( did_action( 'muplugins_loaded' ) ) {
-		add_filter( 'site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
+		// add_filter( 'site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
 	}
 }
