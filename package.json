@@ -21,7 +21,7 @@
     "url": "git://github.com/felixarntz/wp-global-admin.git"
   },
   "bugs": {
-    "url" : "https://github.com/felixarntz/wp-global-admin/issues"
+    "url": "https://github.com/felixarntz/wp-global-admin/issues"
   },
   "license": "GPL-3.0",
   "engines": {

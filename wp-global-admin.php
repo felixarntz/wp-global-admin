@@ -89,7 +89,7 @@ function ga_requirements_notice() {
 	<div class="notice notice-warning is-dismissible">
 		<p>
 			<?php printf(
-				__( 'Please note: WP Global Admin requires WordPress 4.8 or higher. <a href="%s">Deactivate plugin</a>.', 'wp-global-admin' ),
+				__( 'Please note: WP Global Admin requires WordPress 4.9 or higher. <a href="%s">Deactivate plugin</a>.', 'wp-global-admin' ),
 				wp_nonce_url(
 					add_query_arg(
 						array(
@@ -129,7 +129,7 @@ function ga_activate_everywhere( $plugins ) {
 	return $plugins;
 }
 
-if ( version_compare( $GLOBALS['wp_version'], '4.8', '<' ) ) {
+if ( version_compare( $GLOBALS['wp_version'], '4.9', '<' ) ) {
 	add_action( 'admin_notices', 'ga_requirements_notice' );
 	add_action( 'network_admin_notices', 'ga_requirements_notice' );
 } else {
