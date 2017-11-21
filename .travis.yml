@@ -29,9 +29,6 @@ matrix:
     - php: 5.3
       env: WP_VERSION=4.9 WP_MULTISITE=1
       dist: precise
-    - php: 5.2
-      env: WP_VERSION=4.9 WP_MULTISITE=1
-      dist: precise
     - php: nightly
       env: WP_VERSION=4.9 WP_MULTISITE=1
   allow_failures:
