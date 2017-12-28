@@ -116,21 +116,17 @@ function ga_requirements_notice() {
  *
  * @since 1.0.0
  *
- * @param array $plugins Array of plugin basenames as keys and time() as values.
- * @return array Modified plugins array.
+ * @param array $network_options All network options for the new network.
+ * @return array Modified network options including the plugin.
  */
-function ga_activate_everywhere( $plugins ) {
-	if ( ! is_array( $plugins ) ) {
-		$plugins = array();
+function ga_activate_on_new_network( $network_options ) {
+	$plugin_file = plugin_basename( __FILE__ );
+
+	if ( ! isset( $network_options['active_sitewide_plugins'][ $plugin_file ] ) ) {
+		$network_options['active_sitewide_plugins'][ $plugin_file ] = time();
 	}
 
-	if ( isset( $plugins['wp-global-admin/wp-global-admin.php'] ) ) {
-		return $plugins;
-	}
-
-	$plugins['wp-global-admin/wp-global-admin.php'] = time();
-
-	return $plugins;
+	return $network_options;
 }
 
 if ( version_compare( $GLOBALS['wp_version'], '4.9', '<' ) ) {
@@ -140,7 +136,6 @@ if ( version_compare( $GLOBALS['wp_version'], '4.9', '<' ) ) {
 	add_action( 'plugins_loaded', 'ga_init' );
 
 	if ( did_action( 'muplugins_loaded' ) ) {
-		// add_filter( 'site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
-		add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_everywhere', 10, 1 );
+		add_filter( 'populate_network_meta', 'ga_activate_on_new_network', 10, 1 );
 	}
 }
