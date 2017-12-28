@@ -73,7 +73,6 @@ function ga_register_table() {
 		return;
 	}
 
-	// In Core the property would be called `mn_global_tables`
 	$wpdb->ms_global_tables[] = 'global_options';
 	$wpdb->global_options = $wpdb->base_prefix . 'global_options';
 }
@@ -85,6 +84,11 @@ function ga_register_table() {
  */
 function ga_requirements_notice() {
 	$plugin_file = plugin_basename( __FILE__ );
+
+	if ( ! current_user_can( 'deactivate_plugin', $plugin_file ) ) {
+		return;
+	}
+
 	?>
 	<div class="notice notice-warning is-dismissible">
 		<p>
@@ -97,7 +101,7 @@ function ga_requirements_notice() {
 							'plugin'        => $plugin_file,
 							'plugin_status' => 'all',
 						),
-						self_admin_url( 'plugins.php' )
+						network_admin_url( 'plugins.php' )
 					),
 					'deactivate-plugin_' . $plugin_file
 				)
