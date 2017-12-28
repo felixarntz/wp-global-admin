@@ -74,7 +74,7 @@ function ga_register_table() {
 	}
 
 	$wpdb->ms_global_tables[] = 'global_options';
-	$wpdb->global_options = $wpdb->base_prefix . 'global_options';
+	$wpdb->global_options     = $wpdb->base_prefix . 'global_options';
 }
 
 /**
@@ -92,7 +92,9 @@ function ga_requirements_notice() {
 	?>
 	<div class="notice notice-warning is-dismissible">
 		<p>
-			<?php printf(
+			<?php
+			printf(
+				/* translators: %s: URL to deactivate plugin */
 				__( 'Please note: WP Global Admin requires WordPress 4.9 or higher. <a href="%s">Deactivate plugin</a>.', 'wp-global-admin' ),
 				wp_nonce_url(
 					add_query_arg(
@@ -105,7 +107,8 @@ function ga_requirements_notice() {
 					),
 					'deactivate-plugin_' . $plugin_file
 				)
-			); ?>
+			);
+			?>
 		</p>
 	</div>
 	<?php
