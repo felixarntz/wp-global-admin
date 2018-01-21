@@ -7,25 +7,6 @@
  */
 
 /**
- * Checks for an existing global table.
- *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @return Whether a global table exists.
- */
-if ( ! function_exists( 'global_table_check' ) ) :
-function global_table_check() {
-	global $wpdb;
-
-	$sql = $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( $wpdb->global_options ) );
-
-	return (bool) $wpdb->get_var( $sql );
-}
-endif;
-
-/**
  * Prints step 1 for Global installation process.
  *
  * @since 1.0.0

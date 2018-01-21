@@ -29,10 +29,7 @@ require_once( GA_PATH . 'wp-global-admin/wp-admin/includes/global.php' );
 // This would be it if it was part of Core.
 //require_once( ABSPATH . 'wp-admin/includes/global.php' );
 
-// We need to create references to ms global tables to enable Network.
-ga_register_table();
-
-if ( ! global_table_check() && ( ! defined( 'WP_ALLOW_MULTINETWORK' ) || ! WP_ALLOW_MULTINETWORK ) ) {
+if ( ! defined( 'WP_ALLOW_MULTINETWORK' ) || ! WP_ALLOW_MULTINETWORK ) {
 	wp_die(
 		printf(
 			/* translators: 1: WP_ALLOW_MULTINETWORK 2: wp-config.php */
@@ -83,18 +80,13 @@ if ( $_ga_load_admin_files ) {
 if ( $_POST ) {
 	check_admin_referer( 'install-global-1' );
 
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-	// Create global table.
-	install_global();
-
 	$result = populate_global( sanitize_email( $_POST['email'] ), wp_unslash( $_POST['global_name'] ) );
 	if ( is_wp_error( $result ) ) {
 		global_step1( $result );
 	} else {
 		global_step2();
 	}
-} elseif ( is_multinetwork() || global_table_check() ) {
+} elseif ( is_multinetwork() ) {
 	global_step2();
 } else {
 	global_step1();

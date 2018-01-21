@@ -9,26 +9,6 @@
  */
 
 /**
- * Installs the global table.
- *
- * @since 1.0.0
- */
-if ( ! function_exists( 'install_global' ) ) :
-function install_global() {
-	if ( ! defined( 'WP_INSTALLING_GLOBAL' ) ) {
-		define( 'WP_INSTALLING_GLOBAL', true );
-	}
-
-	$queries = ga_get_db_schema( 'global' );
-	if ( empty( $queries ) ) {
-		return;
-	}
-
-	dbDelta( $queries );
-}
-endif;
-
-/**
  * Populate global settings.
  *
  * @since 1.0.0
@@ -93,58 +73,3 @@ function populate_global( $email = '', $global_name = '' ) {
 	return true;
 }
 endif;
-
-/**
- * Retrieve the SQL for creating database tables.
- *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $scope Optional. The tables for which to retrieve SQL. Can be all, global, ms_global, or blog tables. Defaults to all.
- * @param int $blog_id Optional. The site ID for which to retrieve SQL. Default is the current site ID.
- * @return string The SQL needed to create the requested tables.
- */
-function ga_get_db_schema( $scope = 'all', $blog_id = null ) {
-	global $wpdb;
-
-	$charset_collate = $wpdb->get_charset_collate();
-
-	// Engage multinetwork if in the middle of turning it on from global.php.
-	$is_multinetwork = is_multinetwork() || ( defined( 'WP_INSTALLING_GLOBAL' ) && WP_INSTALLING_GLOBAL );
-
-	$max_index_length = 191;
-
-	$mn_global_tables = "CREATE TABLE $wpdb->global_options (
-  option_id bigint(20) unsigned NOT NULL auto_increment,
-  option_name varchar(191) NOT NULL default '',
-  option_value longtext NOT NULL,
-  autoload varchar(20) NOT NULL default 'yes',
-  PRIMARY KEY  (option_id),
-  UNIQUE KEY option_name (option_name)
-) $charset_collate;\n";
-
-	switch ( $scope ) {
-		case 'blog' :
-			$queries = '';
-			break;
-		case 'global' :
-			$queries = '';
-			if ( $is_multinetwork ) {
-				$queries .= $mn_global_tables;
-			}
-			break;
-		case 'mn_global' :
-			$queries = $mn_global_tables;
-			break;
-		case 'all' :
-		default:
-			$queries = '';
-			if ( $is_multinetwork ) {
-				$queries .= $mn_global_tables;
-			}
-			break;
-	}
-
-	return $queries;
-}
