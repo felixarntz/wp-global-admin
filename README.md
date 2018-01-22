@@ -1,3 +1,5 @@
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/wp-global-admin.svg?maxAge=2592000)](https://wordpress.org/plugins/wp-global-admin/)
+[![WordPress](https://img.shields.io/wordpress/v/wp-global-admin.svg?maxAge=2592000)](https://wordpress.org/plugins/wp-global-admin/)
 [![Build Status](https://api.travis-ci.org/felixarntz/wp-global-admin.png?branch=master)](https://travis-ci.org/felixarntz/wp-global-admin)
 [![Code Climate](https://codeclimate.com/github/felixarntz/wp-global-admin/badges/gpa.svg)](https://codeclimate.com/github/felixarntz/wp-global-admin)
 [![Test Coverage](https://codeclimate.com/github/felixarntz/wp-global-admin/badges/coverage.svg)](https://codeclimate.com/github/felixarntz/wp-global-admin/coverage)
