@@ -45,23 +45,26 @@ function _ga_create_global_admin_menu() {
 		unset( $_wp_real_parent_file );
 	}
 
-	$menu = array();
+	$menu    = array();
 	$submenu = array();
 
 	remove_all_actions( '_admin_menu' );
 
 	if ( 'global.php' === $pagenow ) {
 		preg_match( '#/wp-admin/global/?(.*?)$#i', $_SERVER['PHP_SELF'], $self_matches );
+
 		$pagenow = $self_matches[1];
-		$pagenow = trim($pagenow, '/');
-		$pagenow = preg_replace('#\?.*?$#', '', $pagenow);
+		$pagenow = trim( $pagenow, '/' );
+		$pagenow = preg_replace( '#\?.*?$#', '', $pagenow );
 		if ( '' === $pagenow || 'index' === $pagenow || 'index.php' === $pagenow ) {
 			$pagenow = 'index.php';
 		} else {
-			preg_match('#(.*?)(/|$)#', $pagenow, $self_matches);
-			$pagenow = strtolower($self_matches[1]);
-			if ( '.php' !== substr($pagenow, -4, 4) )
-				$pagenow .= '.php'; // for Options +Multiviews: /wp-admin/themes/index.php (themes.php is queried)
+			preg_match( '#(.*?)(/|$)#', $pagenow, $self_matches );
+
+			$pagenow = strtolower( $self_matches[1] );
+			if ( '.php' !== substr( $pagenow, -4, 4 ) ) {
+				$pagenow .= '.php';
+			}
 		}
 	}
 
