@@ -120,12 +120,49 @@ function _ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 		case 'resend_signup':
 			$caps = array( 'manage_signups' );
 			break;
-		case 'edit_user':
-			if ( ! current_user_can( 'manage_global_users' ) && isset( $args[0] ) ) {
-				$user = get_userdata( $args[0] );
-				if ( $user->has_cap( 'manage_global_users' ) ) {
-					$caps[] = 'do_not_allow';
+		case 'remove_user':
+			$caps = array( 'remove_users' );
+
+			if ( isset( $args[0] ) ) {
+				if ( is_global_administrator( $args[0] ) ) {
+					$caps[] = 'manage_global_users';
+				} elseif ( is_super_admin( $args[0] ) ) {
+					$caps[] = 'manage_network_users';
 				}
+			}
+			break;
+		case 'edit_user':
+		case 'edit_users':
+			// Allow user to edit themselves.
+			if ( 'edit_user' === $cap && isset( $args[0] ) && $user_id == $args[0] ) {
+				break;
+			}
+
+			$caps = array( 'edit_users' );
+
+			if ( ! get_global_option( 'network_admins_user_edit', true ) || 'edit_user' === $cap && isset( $args[0] ) && is_global_administrator( $args[0] ) ) {
+				$caps[] = 'manage_global_users';
+			} else {
+				$caps[] = 'manage_network_users';
+			}
+			break;
+		case 'delete_user':
+		case 'delete_users':
+			$caps = array( 'delete_users' );
+
+			if ( ! get_global_option( 'network_admins_user_delete', true ) || 'delete_user' === $cap && isset( $args[0] ) && is_global_administrator( $args[0] ) ) {
+				$caps[] = 'manage_global_users';
+			} else {
+				$caps[] = 'manage_network_users';
+			}
+			break;
+		case 'create_users':
+			$caps = array( 'create_users' );
+
+			if ( ! get_global_option( 'network_admins_user_create', true ) ) {
+				$caps[] = 'manage_global_users';
+			} elseif ( ! get_site_option( 'add_new_users' ) ) {
+				$caps[] = 'manage_network_users';
 			}
 			break;
 	}

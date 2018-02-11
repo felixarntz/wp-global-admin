@@ -36,17 +36,25 @@ get_current_screen()->set_help_sidebar(
 if ( $_POST ) {
 	check_admin_referer( 'global-options' );
 
-	$options = array(
-		'global_name',
-		'admin_email',
+	$checked_options = array(
+		'network_admins_user_edit',
+		'network_admins_user_create',
+		'network_admins_user_delete',
 	);
 
+	$options = array_merge( array(
+		'global_name',
+		'admin_email',
+	), $checked_options );
+
 	foreach ( $options as $option_name ) {
-		if ( ! isset( $_POST[ $option_name ] ) ) {
+		if ( isset( $_POST[ $option_name ] ) ) {
+			$value = wp_unslash( $_POST[ $option_name ] );
+		} elseif ( in_array( $option_name, $checked_options, true ) ) {
+			$value = 0;
+		} else {
 			continue;
 		}
-
-		$value = wp_unslash( $_POST[ $option_name ] );
 
 		update_global_option( $option_name, $value );
 	}
@@ -71,17 +79,44 @@ if ( isset( $_GET['updated'] ) ) {
 			<tr>
 				<th scope="row"><label for="global_name"><?php _e( 'Global Title', 'wp-global-admin' ) ?></label></th>
 				<td>
-					<input name="global_name" type="text" id="global_name" class="regular-text" value="<?php echo esc_attr( get_global_option( 'global_name' ) ) ?>" />
+					<input name="global_name" type="text" id="global_name" class="regular-text" value="<?php echo esc_attr( get_global_option( 'global_name', '' ) ) ?>" />
 				</td>
 			</tr>
 
 			<tr>
 				<th scope="row"><label for="admin_email"><?php _e( 'Global Admin Email', 'wp-global-admin' ) ?></label></th>
 				<td>
-					<input name="admin_email" type="email" id="admin_email" aria-describedby="admin-email-desc" class="regular-text" value="<?php echo esc_attr( get_global_option( 'admin_email' ) ) ?>" />
+					<input name="admin_email" type="email" id="admin_email" aria-describedby="admin-email-desc" class="regular-text" value="<?php echo esc_attr( get_global_option( 'admin_email', '' ) ) ?>" />
 					<p class="description" id="admin-email-desc">
 						<?php _e( 'This address is used for admin purposes.', 'wp-global-admin' ); ?>
 					</p>
+				</td>
+			</tr>
+		</table>
+
+		<h2><?php esc_html_e( 'Permissions', 'wp-global-admin' ); ?></h2>
+
+		<table class="form-table">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'User Access' ); ?></th>
+				<td>
+					<fieldset>
+						<legend class="screen-reader-text"><?php esc_html_e( 'Tweak User Permissions', 'wp-global-admin' ); ?></legend>
+						<label>
+							<input name="network_admins_user_edit" type="checkbox" id="network_admins_user_edit" value="1"<?php checked( get_global_option( 'network_admins_user_edit', true ) ); ?> />
+							<?php _e( 'Allow network administrators to edit users', 'wp-global-admin' ); ?>
+						</label>
+						<br />
+						<label>
+							<input name="network_admins_user_create" type="checkbox" id="network_admins_user_create" value="1"<?php checked( get_global_option( 'network_admins_user_create', true ) ); ?> />
+							<?php _e( 'Allow network administrators to create new users', 'wp-global-admin' ); ?>
+						</label>
+						<br />
+						<label>
+							<input name="network_admins_user_delete" type="checkbox" id="network_admins_user_delete" value="1"<?php checked( get_global_option( 'network_admins_user_delete', true ) ); ?> />
+							<?php _e( 'Allow network administrators to delete users', 'wp-global-admin' ); ?>
+						</label>
+					</fieldset>
 				</td>
 			</tr>
 		</table>
