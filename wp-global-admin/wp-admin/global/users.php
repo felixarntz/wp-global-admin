@@ -90,17 +90,20 @@ if ( isset( $_REQUEST['updated'] ) && $_REQUEST['updated'] == 'true' && ! empty(
 }
 	?>
 <div class="wrap">
-	<h1><?php esc_html_e( 'Users' );
-	if ( current_user_can( 'create_users') ) : ?>
-		<a href="<?php echo global_admin_url( 'user-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a><?php
-	endif;
+	<h1 class="wp-heading-inline"><?php esc_html_e( 'Users' ); ?></h1>
 
+	<?php if ( current_user_can( 'create_users' ) ) : ?>
+		<a href="<?php echo global_admin_url( 'user-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
+	<?php endif; ?>
+
+	<?php
 	if ( strlen( $usersearch ) ) {
 		/* translators: %s: search keywords */
 		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;' ) . '</span>', esc_html( $usersearch ) );
 	}
 	?>
-	</h1>
+
+	<hr class="wp-header-end">
 
 	<?php $wp_list_table->views(); ?>
 
