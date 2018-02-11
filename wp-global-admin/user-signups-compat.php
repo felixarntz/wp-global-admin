@@ -7,12 +7,28 @@
  */
 
 /**
+ * Adjusts the global administrator capabilities.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param array $global_capabilities List of global capabilities.
+ * @return array Modified list of global capabilities.
+ */
+function _ga_add_global_multinetwork_capabilities( $global_capabilities ) {
+	$global_capabilities[] = 'manage_signups';
+
+	return $global_capabilities;
+}
+add_filter( 'global_admin_capabilities', '_ga_add_global_multinetwork_capabilities' );
+
+/**
  * Adjusts the network menus for WP User Signups to be in the Global Administration panel.
  *
  * @since 1.0.0
  * @access private
  */
-function _ga_adjust_signups_menus() {
+function _ga_adjust_user_signups_menus() {
 	if ( ! is_multinetwork() ) {
 		return;
 	}
@@ -20,11 +36,11 @@ function _ga_adjust_signups_menus() {
 	remove_filter( 'map_meta_cap', 'wp_user_signups_map_meta_cap', 10 );
 
 	remove_action( 'network_admin_menu', 'wp_user_signups_add_menu_item', 20 );
-	remove_action( 'admin_menu',         'wp_user_signups_add_menu_item', 20 );
+	remove_action( 'admin_menu', 'wp_user_signups_add_menu_item', 20 );
 
-	add_action( 'global_admin_menu', '_ga_adjust_signups_menu_item', 20 );
+	add_action( 'global_admin_menu', '_ga_adjust_user_signups_menu_item', 20 );
 }
-add_action( 'init', '_ga_adjust_signups_menus' );
+add_action( 'init', '_ga_adjust_user_signups_menus' );
 
 /**
  * Adds the User Signups menu to the Global Administration panel.
@@ -32,7 +48,7 @@ add_action( 'init', '_ga_adjust_signups_menus' );
  * @since 1.0.0
  * @access private
  */
-function _ga_adjust_signups_menu_item() {
+function _ga_adjust_user_signups_menu_item() {
 	$hooks = array();
 
 	$hooks[] = add_menu_page( esc_html__( 'Sign ups', 'wp-user-signups' ), esc_html__( 'Sign ups', 'wp-user-signups' ), 'manage_user_signups', 'user_signups', 'wp_user_signups_output_list_page', 'dashicons-flag', 11 );
@@ -60,7 +76,7 @@ function _ga_adjust_signups_menu_item() {
  * @param array  $args      Additional query arguments for the URL.
  * @return string The adjusted URL.
  */
-function _ga_adjust_signups_admin_url( $url, $admin_url, $args ) {
+function _ga_adjust_user_signups_admin_url( $url, $admin_url, $args ) {
 	if ( ! is_multinetwork() ) {
 		return $url;
 	}
@@ -69,4 +85,4 @@ function _ga_adjust_signups_admin_url( $url, $admin_url, $args ) {
 
 	return add_query_arg( $args, $admin_url );
 }
-add_filter( 'wp_user_signups_admin_url', '_ga_adjust_signups_admin_url', 10, 3 );
+add_filter( 'wp_user_signups_admin_url', '_ga_adjust_user_signups_admin_url', 10, 3 );

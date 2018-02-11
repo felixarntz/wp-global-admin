@@ -6,13 +6,35 @@
  * @since 1.0.0
  */
 
+foreach ( array( 'add_network', 'delete_network' ) as $action ) {
+	add_action( $action, 'wp_maybe_update_global_network_counts' );
+}
+
+unset( $action );
+
+/**
+ * Adjusts the global administrator capabilities.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param array $global_capabilities List of global capabilities.
+ * @return array Modified list of global capabilities.
+ */
+function _ga_add_global_multinetwork_capabilities( $global_capabilities ) {
+	$global_capabilities[] = 'manage_networks';
+
+	return $global_capabilities;
+}
+add_filter( 'global_admin_capabilities', '_ga_add_global_multinetwork_capabilities' );
+
 /**
  * Adjusts the network menus for WP Multi Network to be in the Global Administration panel.
  *
  * @since 1.0.0
  * @access private
  */
-function _ga_adjust_network_menus() {
+function _ga_adjust_multinetwork_menus() {
 	$admin = wpmn()->admin;
 	if ( is_null( $admin ) ) {
 		return;
@@ -24,10 +46,10 @@ function _ga_adjust_network_menus() {
 
 	if ( is_multinetwork() ) {
 		add_action( 'global_admin_menu', array( $admin, 'network_admin_menu' ) );
-		add_action( 'global_admin_menu', '_ga_adjust_networks_menu_position', 11 );
+		add_action( 'global_admin_menu', '_ga_adjust_multinetwork_menu_position', 11 );
 	}
 }
-add_action( 'init', '_ga_adjust_network_menus' );
+add_action( 'init', '_ga_adjust_multinetwork_menus' );
 
 /**
  * Adjusts the position of the Networks admin menu in the Global Administration panel.
@@ -35,7 +57,7 @@ add_action( 'init', '_ga_adjust_network_menus' );
  * @since 1.0.0
  * @access private
  */
-function _ga_adjust_networks_menu_position() {
+function _ga_adjust_multinetwork_menu_position() {
 	global $menu;
 
 	if ( ! isset( $menu[-1] ) ) {
@@ -67,7 +89,7 @@ function _ga_adjust_networks_menu_position() {
  * @param array  $args Additional query arguments for the URL.
  * @return string The adjusted URL.
  */
-function _ga_adjust_networks_admin_url( $url, $args ) {
+function _ga_adjust_multinetwork_admin_url( $url, $args ) {
 	if ( ! is_multinetwork() ) {
 		return $url;
 	}
@@ -78,7 +100,7 @@ function _ga_adjust_networks_admin_url( $url, $args ) {
 
 	return add_query_arg( $args, global_admin_url( 'admin.php' ) );
 }
-add_filter( 'edit_networks_screen_url', '_ga_adjust_networks_admin_url', 10, 2 );
+add_filter( 'edit_networks_screen_url', '_ga_adjust_multinetwork_admin_url', 10, 2 );
 
 /**
  * Adjusts the detection of which networks belong to a user.

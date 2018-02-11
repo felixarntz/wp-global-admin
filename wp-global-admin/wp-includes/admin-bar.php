@@ -41,7 +41,6 @@ function _ga_adjust_admin_bar_my_sites_menu( $admin_bar ) {
 	/**
 	 * Filters whether the Networks item should be shown in the Global Admin menu of the Toolbar.
 	 *
-	 * @private
 	 * @since 1.0.0
 	 *
 	 * @param bool Whether to show the item. Defaults to false.
@@ -70,6 +69,14 @@ function _ga_adjust_admin_bar_my_sites_menu( $admin_bar ) {
 	) );
 }
 
+/**
+ * Adjusts the View Site link in the Toolbar as necessary.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param WP_Admin_Bar $admin_bar The Toolbar instance.
+ */
 function _ga_adjust_admin_bar_site_menu( $admin_bar ) {
 	if ( ! is_user_logged_in() || ! current_user_can( 'manage_global' ) ) {
 		return;
@@ -93,6 +100,12 @@ function _ga_adjust_admin_bar_site_menu( $admin_bar ) {
 	) );
 }
 
+/**
+ * Adjusts the Toolbar output if the current setup is a multinetwork.
+ *
+ * @since 1.0.0
+ * @access private
+ */
 function _ga_initialize_admin_bar_changes() {
 	if ( ! is_multinetwork() ) {
 		return;
@@ -100,6 +113,7 @@ function _ga_initialize_admin_bar_changes() {
 
 	add_action( 'admin_bar_menu', '_ga_adjust_admin_bar_my_sites_menu', 19, 1 );
 
+	// Only change the following if we're in the global administration panel.
 	if ( ! is_global_admin() ) {
 		return;
 	}
