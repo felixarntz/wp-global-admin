@@ -165,6 +165,53 @@ function _ga_map_meta_cap( $caps, $cap, $user_id, $args ) {
 				$caps[] = 'manage_network_users';
 			}
 			break;
+		case 'edit_files':
+		case 'edit_plugins':
+		case 'edit_themes':
+			$caps = array( $cap );
+
+			if ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) {
+				$caps[] = 'do_not_allow';
+			} elseif ( ! wp_is_file_mod_allowed( 'capability_edit_themes' ) ) {
+				$caps[] = 'do_not_allow';
+			} else {
+				$caps[] = 'manage_global';
+			}
+			break;
+		case 'update_plugins':
+		case 'delete_plugins':
+		case 'install_plugins':
+		case 'upload_plugins':
+		case 'update_themes':
+		case 'delete_themes':
+		case 'install_themes':
+		case 'upload_themes':
+		case 'update_core':
+			if ( 'upload_themes' === $cap || 'upload_plugins' === $cap ) {
+				$caps = array( str_replace( 'upload_', 'install_', $cap ) );
+			} else {
+				$caps = array( $cap );
+			}
+
+			if ( ! wp_is_file_mod_allowed( 'capability_update_core' ) ) {
+				$caps[] = 'do_not_allow';
+			} else {
+				$caps[] = 'manage_global';
+			}
+			break;
+		case 'install_languages':
+		case 'update_languages':
+			$caps = array( 'install_languages' );
+
+			if ( ! wp_is_file_mod_allowed( 'can_install_language_pack' ) ) {
+				$caps[] = 'do_not_allow';
+			} else {
+				$caps[] = 'manage_global';
+			}
+			break;
+		case 'upgrade_network':
+			$caps = array( 'upgrade_network', 'manage_global' );
+			break;
 	}
 
 	// Hack: Add do_not_allow for mapped global capabilities so that super admins don't have it.
