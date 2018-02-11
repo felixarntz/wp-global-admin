@@ -11,6 +11,7 @@ require_once( dirname( __FILE__ ) . '/admin.php' );
 
 /** Load WordPress dashboard API */
 require_once( ABSPATH . 'wp-admin/includes/dashboard.php' );
+require_once dirname( dirname( __FILE__ ) ) . '/includes/dashboard.php';
 
 if ( ! is_multinetwork() ) {
 	wp_die( __( 'Multinetwork support is not enabled.', 'wp-global-admin' ) );
@@ -56,7 +57,7 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __('<a href="https://github.com/felixarntz/wp-global-admin/wiki/Global-Admin" target="_blank">Documentation on the Global Admin</a>', 'wp-global-admin' ) . '</p>'
 );
 
-wp_dashboard_setup();
+wp_global_dashboard_setup();
 
 wp_enqueue_script( 'dashboard' );
 wp_enqueue_script( 'plugin-install' );

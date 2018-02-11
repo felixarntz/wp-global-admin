@@ -103,6 +103,34 @@ function _ga_adjust_multinetwork_admin_url( $url, $args ) {
 add_filter( 'edit_networks_screen_url', '_ga_adjust_multinetwork_admin_url', 10, 2 );
 
 /**
+ * Adjusts the networks list URL within the global administration panel.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param string $list_url Networks list URL, or empty string if not set.
+ * @return string Adjusted networks list URL.
+ */
+function _ga_adjust_multinetwork_list_url( $list_url ) {
+	return global_admin_url( 'admin.php?page=networks' );
+}
+add_filter( 'global_right_now_networks_url', '_ga_adjust_multinetwork_list_url' );
+
+/**
+ * Adjusts the Add Network URL within the global administration panel.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param string $add_url Add Network URL, or empty string if not set.
+ * @return string Adjusted Add Network URL.
+ */
+function _ga_adjust_multinetwork_add_url( $add_url ) {
+	return global_admin_url( 'admin.php?page=add-new-network' );
+}
+add_filter( 'global_right_now_add_network_url', '_ga_adjust_multinetwork_add_url' );
+
+/**
  * Adjusts the edit URL for a network within the global administration panel.
  *
  * @since 1.0.0
