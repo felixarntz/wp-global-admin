@@ -133,6 +133,28 @@ function _ga_trigger_global_admin_menu_hook() {
 add_action( 'admin_menu', '_ga_trigger_global_admin_menu_hook', 0 );
 
 /**
+ * This enables triggering a 'global_admin_notices' hook. Of course in a hacky way.
+ *
+ * @since 1.0.0
+ * @access private
+ */
+function _ga_trigger_global_admin_notices_hook() {
+	if ( ! is_global_admin() ) {
+		return;
+	}
+
+	remove_all_actions( 'admin_notices' );
+
+	/**
+	 * Prints global admin screen notices.
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'global_admin_notices' );
+}
+add_action( 'admin_notices', '_ga_trigger_global_admin_notices_hook', 0 );
+
+/**
  * Adjusts the title for the title tag in the global administration panel.
  *
  * If it was in Core, it would happen directly in `wp-admin/admin-header.php`.
