@@ -18,7 +18,168 @@ if ( ! current_user_can( 'manage_global_users' ) ) {
 }
 
 if ( isset( $_GET['action'] ) ) {
-	//TODO: process user update and redirect back
+
+	// The following switch statement is an almost exact copy from wp-admin/network/users.php.
+	switch ( $_GET['action'] ) {
+		case 'deleteuser':
+			check_admin_referer( 'deleteuser' );
+
+			$id = intval( $_GET['id'] );
+			if ( $id != '0' && $id != '1' ) {
+				$_POST['allusers'] = array( $id ); // confirm_delete_users() can only handle with arrays
+				$title             = __( 'Users' );
+				$parent_file       = 'users.php';
+				require_once( ABSPATH . 'wp-admin/admin-header.php' );
+				echo '<div class="wrap">';
+				confirm_delete_users( $_POST['allusers'] );
+				echo '</div>';
+				require_once( ABSPATH . 'wp-admin/admin-footer.php' );
+			} else {
+				wp_redirect( global_admin_url( 'users.php' ) );
+			}
+			exit();
+
+		case 'allusers':
+			if ( ( isset( $_POST['action'] ) || isset( $_POST['action2'] ) ) && isset( $_POST['allusers'] ) ) {
+				check_admin_referer( 'bulk-users-global' );
+
+				$doaction     = $_POST['action'] != -1 ? $_POST['action'] : $_POST['action2'];
+				$userfunction = '';
+
+				foreach ( (array) $_POST['allusers'] as $user_id ) {
+					if ( ! empty( $user_id ) ) {
+						switch ( $doaction ) {
+							case 'delete':
+								if ( ! current_user_can( 'delete_users' ) ) {
+									wp_die( __( 'Sorry, you are not allowed to access this page.' ), 403 );
+								}
+								$title       = __( 'Users' );
+								$parent_file = 'users.php';
+								require_once( ABSPATH . 'wp-admin/admin-header.php' );
+								echo '<div class="wrap">';
+								confirm_delete_users( $_POST['allusers'] );
+								echo '</div>';
+								require_once( ABSPATH . 'wp-admin/admin-footer.php' );
+								exit();
+
+							case 'spam':
+								$user = get_userdata( $user_id );
+								if ( is_global_administrator( $user->ID ) || is_super_admin( $user->ID ) ) {
+									wp_die( sprintf( __( 'Warning! User cannot be modified. The user %s is a network administrator.' ), esc_html( $user->user_login ) ) );
+								}
+
+								$userfunction = 'all_spam';
+								$blogs        = get_blogs_of_user( $user_id, true );
+								foreach ( (array) $blogs as $details ) {
+									if ( $details->userblog_id != get_network()->site_id ) { // main blog not a spam !
+										update_blog_status( $details->userblog_id, 'spam', '1' );
+									}
+								}
+								update_user_status( $user_id, 'spam', '1' );
+								break;
+
+							case 'notspam':
+								$userfunction = 'all_notspam';
+								$blogs        = get_blogs_of_user( $user_id, true );
+								foreach ( (array) $blogs as $details ) {
+									update_blog_status( $details->userblog_id, 'spam', '0' );
+								}
+
+								update_user_status( $user_id, 'spam', '0' );
+								break;
+						}
+					}
+				}
+
+				if ( ! in_array( $doaction, array( 'delete', 'spam', 'notspam' ), true ) ) {
+					$sendback = wp_get_referer();
+
+					$user_ids = (array) $_POST['allusers'];
+
+					/**
+					 * Fires when a custom bulk action should be handled.
+					 *
+					 * The redirect link should be modified with success or failure feedback
+					 * from the action to be used to display feedback to the user.
+					 *
+					 * The dynamic portion of the hook name, `$screen`, refers to the current screen ID.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param string $redirect_url The redirect URL.
+					 * @param string $action       The action being taken.
+					 * @param array  $items        The items to take the action on.
+					 * @param int    $site_id      The site ID.
+					 */
+					$sendback = apply_filters( 'handle_global_bulk_actions-' . get_current_screen()->id, $sendback, $doaction, $user_ids );
+
+					wp_safe_redirect( $sendback );
+					exit();
+				}
+
+				wp_safe_redirect(
+					add_query_arg(
+						array(
+							'updated' => 'true',
+							'action'  => $userfunction,
+						), wp_get_referer()
+					)
+				);
+			} else {
+				$location = global_admin_url( 'users.php' );
+
+				if ( ! empty( $_REQUEST['paged'] ) ) {
+					$location = add_query_arg( 'paged', (int) $_REQUEST['paged'], $location );
+				}
+				wp_redirect( $location );
+			}
+			exit();
+
+		case 'dodelete':
+			check_admin_referer( 'ms-users-delete' );
+
+			if ( ! empty( $_POST['blog'] ) && is_array( $_POST['blog'] ) ) {
+				foreach ( $_POST['blog'] as $id => $users ) {
+					foreach ( $users as $blogid => $user_id ) {
+						if ( ! current_user_can( 'delete_user', $id ) ) {
+							continue;
+						}
+
+						if ( ! empty( $_POST['delete'] ) && 'reassign' == $_POST['delete'][ $blogid ][ $id ] ) {
+							remove_user_from_blog( $id, $blogid, $user_id );
+						} else {
+							remove_user_from_blog( $id, $blogid );
+						}
+					}
+				}
+			}
+			$i = 0;
+			if ( is_array( $_POST['user'] ) && ! empty( $_POST['user'] ) ) {
+				foreach ( $_POST['user'] as $id ) {
+					if ( ! current_user_can( 'delete_user', $id ) ) {
+						continue;
+					}
+					wpmu_delete_user( $id );
+					$i++;
+				}
+			}
+
+			if ( $i == 1 ) {
+				$deletefunction = 'delete';
+			} else {
+				$deletefunction = 'all_delete';
+			}
+
+			wp_redirect(
+				add_query_arg(
+					array(
+						'updated' => 'true',
+						'action'  => $deletefunction,
+					), global_admin_url( 'users.php' )
+				)
+			);
+			exit();
+	}
 }
 
 require_once ABSPATH . 'wp-admin/includes/class-wp-ms-users-list-table.php';
