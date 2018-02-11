@@ -87,25 +87,6 @@ function _ga_trigger_global_admin_menu_hook() {
 add_action( 'admin_menu', '_ga_trigger_global_admin_menu_hook', 0 );
 
 /**
- * Adds the Global Setup screen to the network administration menu if necessary.
- *
- * If it was in Core, that would happen directly in `wp-admin/network/menu.php`.
- *
- * @since 1.0.0
- * @access private
- */
-function _ga_add_global_setup_menu_item() {
-	if ( is_multinetwork() && ! is_main_network() ) {
-		//TODO: add Delete Network screen
-	}
-
-	if ( defined( 'WP_ALLOW_MULTINETWORK' ) && WP_ALLOW_MULTINETWORK && ! is_multinetwork() ) {
-		add_submenu_page( 'settings.php', __( 'Global Setup', 'wp-global-admin' ), __( 'Global Setup', 'wp-global-admin' ), 'manage_networks', GA_PATH . 'wp-global-admin/wp-admin/network/global.php' );
-	}
-}
-add_action( 'network_admin_menu', '_ga_add_global_setup_menu_item' );
-
-/**
  * Adjusts the title for the title tag in the global administration panel.
  *
  * If it was in Core, it would happen directly in `wp-admin/admin-header.php`.
