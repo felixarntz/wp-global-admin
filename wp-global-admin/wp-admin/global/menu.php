@@ -12,16 +12,11 @@ $menu[2] = array( __( 'Dashboard' ), 'manage_global', 'index.php', '', 'menu-top
 $menu[4] = array( '', 'read', 'separator1', '', 'wp-menu-separator' );
 
 $menu[10] = array( __( 'Users' ), 'manage_global_users', 'users.php', '', 'menu-top menu-icon-users', 'menu-users', 'dashicons-admin-users' );
-$submenu['users.php'][5]  = array( __( 'All Users' ), 'manage_network_users', 'users.php' );
-$submenu['users.php'][10]  = array( _x( 'Add New', 'user' ), 'create_users', 'user-new.php' );
 
-$menu[25] = array( __( 'Settings' ), 'manage_global_options', 'settings.php', '', 'menu-top menu-icon-settings', 'menu-settings', 'dashicons-admin-settings');
-if ( defined( 'MULTINETWORK' ) && defined( 'WP_ALLOW_MULTINETWORK' ) && WP_ALLOW_MULTINETWORK ) {
-	$submenu['settings.php'][5]  = array( __( 'Global Settings', 'wp-global-admin' ), 'manage_global_options', 'settings.php' );
-	$submenu['settings.php'][10] = array( __( 'Global Setup', 'wp-global-admin' ), 'manage_global_options', 'setup.php' );
-}
+$submenu['users.php'][5]  = array( __( 'All Users' ), 'manage_global_users', 'users.php' );
+$submenu['users.php'][10] = array( _x( 'Add New', 'user' ), 'create_users', 'user-new.php' );
 
-unset($update_data);
+$menu[25] = array( __( 'Settings' ), 'manage_global_options', 'settings.php', '', 'menu-top menu-icon-settings', 'menu-settings', 'dashicons-admin-settings' );
 
 $menu[99] = array( '', 'exist', 'separator-last', '', 'wp-menu-separator' );
 

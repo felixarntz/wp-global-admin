@@ -18,7 +18,7 @@ function _ga_detect_abspath() {
 	}
 
 	// Let's assume that most people use these names when having WP in a subdirectory separate from
-	// the wp-content directory.
+	// the wp-content directory. This check is absolutely terrible though.
 	$wp_core_dirs = array( 'wordpress', 'wp', 'core' );
 
 	foreach ( $wp_core_dirs as $wp_core_dir ) {
