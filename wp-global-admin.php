@@ -37,9 +37,9 @@ function ga_init() {
 		require_once GA_PATH . 'wp-global-admin/wp-includes/admin-bar.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/ms-functions.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/ms-default-filters.php';
+		require_once GA_PATH . 'wp-global-admin/wp-includes/setup.php';
 
 		if ( is_admin() ) {
-			require_once GA_PATH . 'wp-global-admin/wp-admin/includes/schema.php';
 			require_once GA_PATH . 'wp-global-admin/wp-admin/includes/hacks.php';
 		}
 
