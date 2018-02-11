@@ -33,7 +33,6 @@ function ga_init() {
 
 		require_once GA_PATH . 'wp-global-admin/wp-includes/load.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/capabilities.php';
-		require_once GA_PATH . 'wp-global-admin/wp-includes/user.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/link-template.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/admin-bar.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/ms-functions.php';
@@ -45,6 +44,9 @@ function ga_init() {
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		if ( is_plugin_active( 'wp-network-roles/wp-network-roles.php' ) ) {
+			require_once GA_PATH . 'wp-global-admin/network-roles-compat.php';
+		}
 		if ( is_plugin_active( 'wp-multi-network/wpmn-loader.php' ) ) {
 			require_once GA_PATH . 'wp-global-admin/multi-network-compat.php';
 		}
