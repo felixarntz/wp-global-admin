@@ -29,7 +29,7 @@ function _ga_add_global_multinetwork_capabilities( $global_capabilities ) {
 add_filter( 'global_admin_capabilities', '_ga_add_global_multinetwork_capabilities' );
 
 /**
- * Adjusts the network menus for WP Multi Network to be in the Global Administration panel.
+ * Adjusts the network menus for WP Multi Network to be in the global administration panel.
  *
  * @since 1.0.0
  * @access private
@@ -52,7 +52,7 @@ function _ga_adjust_multinetwork_menus() {
 add_action( 'init', '_ga_adjust_multinetwork_menus' );
 
 /**
- * Adjusts the position of the Networks admin menu in the Global Administration panel.
+ * Adjusts the position of the Networks admin menu in the global administration panel.
  *
  * @since 1.0.0
  * @access private
@@ -80,7 +80,7 @@ function _ga_adjust_multinetwork_menu_position() {
 }
 
 /**
- * Adjusts the URL to the networks admin page to be part of the Global Administration panel.
+ * Adjusts the URL to the networks admin page to be part of the global administration panel.
  *
  * @since 1.0.0
  * @access private
@@ -101,6 +101,21 @@ function _ga_adjust_multinetwork_admin_url( $url, $args ) {
 	return add_query_arg( $args, global_admin_url( 'admin.php' ) );
 }
 add_filter( 'edit_networks_screen_url', '_ga_adjust_multinetwork_admin_url', 10, 2 );
+
+/**
+ * Adjusts the edit URL for a network within the global administration panel.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param string $edit_url   Network edit URL, or empty string if not set.
+ * @param int    $network_id Network ID.
+ * @return string Adjusted network edit URL.
+ */
+function _ga_adjust_multinetwork_edit_url( $edit_url, $network_id ) {
+	return global_admin_url( 'admin.php?page=networks&id=' . $network_id . '&action=edit_network' );
+}
+add_filter( 'global_user_list_edit_network_url', '_ga_adjust_multinetwork_edit_url', 10, 2 );
 
 /**
  * Adjusts the detection of which networks belong to a user.
