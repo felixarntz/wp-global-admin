@@ -10,7 +10,25 @@
  */
 
 /**
- * This is an incredibly hacky attempt to work with menus in the Global Admin.
+ * Adjusts the ID and base of the current screen if in the global admin.
+ *
+ * This is very hacky, but the class is final and just not extendable at all.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @param WP_Screen $wp_screen Current screen.
+ */
+function _ga_adjust_global_admin_screen( $wp_screen ) {
+	if ( defined( 'WP_GLOBAL_ADMIN' ) && WP_GLOBAL_ADMIN ) {
+		$wp_screen->id   .= '-global';
+		$wp_screen->base .= '-global';
+	}
+}
+add_action( 'current_screen', '_ga_adjust_global_admin_screen' );
+
+/**
+ * This is an incredibly hacky attempt to work with menus in the global admin.
  * Looks like there's no other way to do it from a plugin.
  *
  * @since 1.0.0
@@ -50,7 +68,7 @@ function _ga_create_global_admin_menu() {
 	require_once( GA_PATH . 'wp-global-admin/wp-admin/global/menu.php' );
 
 	/**
-	 * Fires before the administration menu loads in the Global Admin.
+	 * Fires before the administration menu loads in the global admin.
 	 *
 	 * The hook fires before menus and sub-menus are removed based on user privileges.
 	 *
@@ -62,7 +80,7 @@ function _ga_create_global_admin_menu() {
 add_action( '_admin_menu', '_ga_create_global_admin_menu', 0 );
 
 /**
- * This is another incredibly hacky attempt to work with menus in the Global Admin.
+ * This is another incredibly hacky attempt to work with menus in the global admin.
  * Looks like there's no other way to do it from a plugin.
  *
  * @since 1.0.0
@@ -76,7 +94,7 @@ function _ga_trigger_global_admin_menu_hook() {
 	remove_all_actions( 'admin_menu' );
 
 	/**
-	 * Fires before the administration menu loads in the Global Admin.
+	 * Fires before the administration menu loads in the global admin.
 	 *
 	 * @since 1.0.0
 	 *
