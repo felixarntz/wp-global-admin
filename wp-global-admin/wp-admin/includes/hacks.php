@@ -28,6 +28,31 @@ function _ga_adjust_global_admin_screen( $wp_screen ) {
 add_action( 'current_screen', '_ga_adjust_global_admin_screen' );
 
 /**
+ * Adjusts the $self global to be set correctly in the global admin.
+ *
+ * The 'parent_file' filter is simply used because it fires in the right location.
+ * The filter value is passed through without being modified.
+ *
+ * @since 1.0.0
+ * @access private
+ *
+ * @global string $self Current admin file.
+ *
+ * @param string $parent_file Parent file.
+ * @return string Unmodified parent file.
+ */
+function _ga_adjust_global_admin_self( $parent_file ) {
+	global $self;
+
+	if ( defined( 'WP_GLOBAL_ADMIN' ) && WP_GLOBAL_ADMIN ) {
+		$self = preg_replace( '|^.*/wp-admin/global/|i', '', $_SERVER['PHP_SELF'] );
+	}
+
+	return $parent_file;
+}
+add_filter( 'parent_file', '_ga_adjust_global_admin_self' );
+
+/**
  * This is an incredibly hacky attempt to work with menus in the global admin.
  * Looks like there's no other way to do it from a plugin.
  *
