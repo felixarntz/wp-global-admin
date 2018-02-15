@@ -28,6 +28,14 @@ msgstr ""
 msgid "Please note: WP Global Admin requires the WP Global Options plugin to be installed and activated. <a href=\"%s\">Install plugin</a>."
 msgstr ""
 
+#: wp-global-admin/wp-includes/admin-bar.php:30, wp-global-admin/wp-admin/includes/hacks.php:174
+msgid "Global Admin"
+msgstr ""
+
+#: wp-global-admin/wp-includes/admin-bar.php:52, wp-global-admin/wp-includes/setup.php:27, wp-global-admin/wp-admin/includes/class-wp-ga-users-list-table.php:136
+msgid "Networks"
+msgstr ""
+
 #: wp-global-admin/wp-includes/setup.php:26
 msgid "Network"
 msgstr ""
@@ -38,10 +46,6 @@ msgstr ""
 
 #: wp-global-admin/wp-includes/setup.php:27
 msgid "Sites"
-msgstr ""
-
-#: wp-global-admin/wp-includes/setup.php:27, wp-global-admin/wp-admin/includes/class-wp-ga-users-list-table.php:136
-msgid "Networks"
 msgstr ""
 
 #: wp-global-admin/wp-admin/global/about.php:13, wp-global-admin/wp-admin/global/admin.php:46, wp-global-admin/wp-admin/global/credits.php:13, wp-global-admin/wp-admin/global/edit.php:13, wp-global-admin/wp-admin/global/freedoms.php:13, wp-global-admin/wp-admin/global/index.php:17, wp-global-admin/wp-admin/global/privacy.php:13, wp-global-admin/wp-admin/global/profile.php:13, wp-global-admin/wp-admin/global/settings.php:13, wp-global-admin/wp-admin/global/user-edit.php:13, wp-global-admin/wp-admin/global/user-new.php:13, wp-global-admin/wp-admin/global/users.php:13
@@ -141,7 +145,7 @@ msgid "Add User will set up a new user account in the setup and send that person
 msgstr ""
 
 #: wp-global-admin/wp-admin/global/user-new.php:30, wp-global-admin/wp-admin/global/users.php:216
-msgid "<a href=\"https://github.com/felixarntz/wp-global-admin/wiki/Global-Admin-Users-Screen\" target=\"_blank\">Documentation on Network Users</a>"
+msgid "<a href=\"https://github.com/felixarntz/wp-global-admin/wiki/Global-Admin-Users-Screen\" target=\"_blank\">Documentation on Global Users</a>"
 msgstr ""
 
 #: wp-global-admin/wp-admin/global/users.php:206
@@ -221,8 +225,4 @@ msgstr ""
 
 #: wp-global-admin/wp-admin/includes/dashboard.php:159, wp-global-admin/wp-admin/includes/dashboard.php:161
 msgid "Search Networks"
-msgstr ""
-
-#: wp-global-admin/wp-admin/includes/hacks.php:174
-msgid "Global Admin"
 msgstr ""

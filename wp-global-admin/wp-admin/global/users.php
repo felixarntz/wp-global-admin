@@ -213,7 +213,7 @@ get_current_screen()->add_help_tab( array(
 
 get_current_screen()->set_help_sidebar(
 	'<p><strong>' . __( 'For more information:', 'wp-global-admin' ) . '</strong></p>' .
-	'<p>' . __( '<a href="https://github.com/felixarntz/wp-global-admin/wiki/Global-Admin-Users-Screen" target="_blank">Documentation on Network Users</a>', 'wp-global-admin' ) . '</p>'
+	'<p>' . __( '<a href="https://github.com/felixarntz/wp-global-admin/wiki/Global-Admin-Users-Screen" target="_blank">Documentation on Global Users</a>', 'wp-global-admin' ) . '</p>'
 );
 
 get_current_screen()->set_screen_reader_content( array(

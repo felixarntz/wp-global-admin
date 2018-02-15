@@ -27,7 +27,7 @@ function _ga_adjust_admin_bar_my_sites_menu( $admin_bar ) {
 	$admin_bar->add_menu( array(
 		'parent' => 'my-sites-global-admin',
 		'id'     => 'global-admin',
-		'title'  => __( 'Global Admin', 'global-admin' ),
+		'title'  => __( 'Global Admin', 'wp-global-admin' ),
 		'href'   => global_admin_url(),
 	) );
 
@@ -49,7 +49,7 @@ function _ga_adjust_admin_bar_my_sites_menu( $admin_bar ) {
 		$admin_bar->add_menu( array(
 			'parent' => 'global-admin',
 			'id'     => 'global-admin-n',
-			'title'  => __( 'Networks', 'global-admin' ),
+			'title'  => __( 'Networks', 'wp-global-admin' ),
 			'href'   => add_query_arg( array( 'page' => 'networks' ), global_admin_url( 'admin.php' ) ),
 		) );
 	}
