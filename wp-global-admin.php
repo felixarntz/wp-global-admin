@@ -8,13 +8,14 @@
  * @wordpress-plugin
  * Plugin Name: WP Global Admin
  * Plugin URI:  https://github.com/felixarntz/wp-global-admin
- * Description: Introduces a global admin panel in WordPress. Works best with WP Multi Network.
- * Version:     1.0.0
+ * Description: Introduces a global admin panel in WordPress.
+ * Version:     1.0.0-beta.1
  * Author:      Felix Arntz
  * Author URI:  https://leaves-and-love.net
  * License:     GNU General Public License v2 (or later)
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wp-global-admin
+ * Domain Path: /languages/
  * Network:     true
  * Tags:        global admin, network, multisite, multinetwork
  */
