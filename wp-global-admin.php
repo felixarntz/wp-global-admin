@@ -20,6 +20,15 @@
  */
 
 /**
+ * Loads the plugin textdomain.
+ *
+ * @since 1.0.0
+ */
+function ga_load_textdomain() {
+	load_plugin_textdomain( 'wp-global-admin', false, basename( dirname( __FILE__ ) ) . '/languages' );
+}
+
+/**
  * Initializes the plugin.
  *
  * Loads the required files, registers the new DB table, global cache groups and global capabilities.
@@ -176,6 +185,8 @@ function ga_activate_on_update_request( $plugins ) {
 function ga_activate_on_new_wpmn_network_add_hook() {
 	add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_on_update_request' );
 }
+
+add_action( 'plugins_loaded', 'ga_load_textdomain', 1 );
 
 if ( version_compare( $GLOBALS['wp_version'], '4.9', '<' ) ) {
 	add_action( 'admin_notices', 'ga_requirements_notice' );
