@@ -17,7 +17,15 @@ Introduces a global admin panel in WordPress.
 
 == Description ==
 
-TODO
+= Features =
+
+* introduces an entirely new administration panel, the global administration panel
+* introduces global administrators and adjust capabilities so that certain setup-wide actions can no longer be performed by network administrators
+* shows all users in the global administration panel, and only the ones in the current network in the network administration panel (if the WP Network Roles plugin is activated)
+* includes a global settings page in the new administration panel
+* includes custom dashboard widgets for the global administration panel
+* introduces a global user count, network count and site count, and fixes the incorrect network user count to actually only count users of the respective network (if the WP Network Roles is activated)
+* supports the WP Multi Network plugin, the WP Network Roles plugin and the WP User Signups plugin
 
 == Installation ==
 
@@ -25,8 +33,6 @@ TODO
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
-
-TODO
 
 = Where should I submit my support request? =
 
