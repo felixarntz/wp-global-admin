@@ -38,9 +38,6 @@ function ga_load_textdomain() {
  */
 function ga_init() {
 	if ( function_exists( 'go_init' ) ) {
-		define( 'GA_PATH', plugin_dir_path( __FILE__ ) );
-		define( 'GA_URL', plugin_dir_url( __FILE__ ) );
-
 		require_once GA_PATH . 'wp-global-admin/wp-includes/load.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/capabilities.php';
 		require_once GA_PATH . 'wp-global-admin/wp-includes/link-template.php';
@@ -187,14 +184,34 @@ function ga_activate_on_new_wpmn_network_add_hook() {
 	add_filter( 'pre_update_site_option_active_sitewide_plugins', 'ga_activate_on_update_request' );
 }
 
-add_action( 'plugins_loaded', 'ga_load_textdomain', 1 );
+/**
+ * Hooks in plugin initialization functionality.
+ *
+ * @since 1.0.0
+ */
+function ga_add_hooks() {
+	$file          = wp_normalize_path( __FILE__ );
+	$mu_plugin_dir = wp_normalize_path( WPMU_PLUGIN_DIR );
+	$is_mu_plugin  = (bool) preg_match( '#^' . preg_quote( $mu_plugin_dir, '#' ) . '/#', $file );
+	$plugin_hook   = $is_mu_plugin ? 'muplugins_loaded' : 'plugins_loaded';
 
-if ( version_compare( $GLOBALS['wp_version'], '4.9', '<' ) ) {
-	add_action( 'admin_notices', 'ga_requirements_notice' );
-	add_action( 'network_admin_notices', 'ga_requirements_notice' );
-} else {
-	add_action( 'plugins_loaded', 'ga_init' );
+	add_action( $plugin_hook, 'ga_load_textdomain', 1 );
 
-	add_filter( 'populate_network_meta', 'ga_activate_on_new_network', 10, 1 );
-	add_action( 'add_network', 'ga_activate_on_new_wpmn_network_add_hook', 10, 0 );
+	if ( version_compare( $GLOBALS['wp_version'], '4.9', '<' ) ) {
+		add_action( 'admin_notices', 'ga_requirements_notice' );
+		add_action( 'network_admin_notices', 'ga_requirements_notice' );
+		return;
+	}
+
+	define( 'GA_PATH', plugin_dir_path( __FILE__ ) );
+	define( 'GA_URL', plugin_dir_url( __FILE__ ) );
+
+	add_action( $plugin_hook, 'ga_init' );
+
+	if ( ! $is_mu_plugin ) {
+		add_filter( 'populate_network_meta', 'ga_activate_on_new_network', 10, 1 );
+		add_action( 'add_network', 'ga_activate_on_new_wpmn_network_add_hook', 10, 0 );
+	}
 }
+
+ga_add_hooks();
